@@ -1,5 +1,5 @@
 <?php
-// route.php
+namespace util;
 
 class Router
 {
@@ -32,6 +32,23 @@ class Router
         // デフォルトのルートがない場合は 404 エラーを表示
         header("HTTP/1.0 404 Not Found");
         return null;
+    }
+
+    public function generateUrl($routeName)
+    {
+        // ルート名に基づいてURLを生成するロジック
+        // 例：$routeNameが'test'なら、'/repo_sample/test'を生成
+        return HOME_URL . $routeName;
+    }
+
+    public function redirectTo($routeName)
+    {
+        // ルート名に基づいてURLを生成するロジック
+        $url = $this->generateUrl($routeName);
+        
+        // リダイレクト
+        header("Location: $url");
+        exit;
     }
 }
 ?>

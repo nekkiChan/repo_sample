@@ -17,16 +17,4 @@ define('APP_Path', 'app\\');
 // コントローラーディレクトリ設定
 define('Controller_Path', 'controllers\\');
 
-
-// // データベースの接続情報
-
-// // ホスト情報
-// define('DB_HOST','localhost');
-// // ユーザー名
-// define('DB_USER', 'postgres');
-// // パスワード
-// define('DB_PASSWORD', 'corazon');
-// // データベース名
-// define('DB_NAME', 'repo_sample');
-
 ?>

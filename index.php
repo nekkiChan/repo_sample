@@ -14,11 +14,14 @@ spl_autoload_register(function ($className) {
     }
 });
 
-require_once 'route.php';
+require_once 'util/route.php';
+use util\Router;
 
 $router = new Router();
 $router->addRoute('', 'HomeController', 'index');
+$router->addRoute('home', 'HomeController', 'index');
 $router->addRoute('test', 'HomeController', 'test');
+$router->addRoute('login', 'LoginController', 'index');
 
 $route = isset($_GET['url']) ? $_GET['url'] : '';
 $router->dispatch($route);

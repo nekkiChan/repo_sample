@@ -33,11 +33,18 @@ class UserModel
     // プレースホルダーを使用したデータ挿入の例
     public function insertUserData($username, $email)
     {
-        echo "こんにちは<br>";
-        echo "$username<br>$email";
         $query = "INSERT INTO users (username, email) VALUES (:username, :email)";
         $params = array(':username' => $username, ':email' => $email);
 
         $this->dbConnector->executeQueryWithParams($query, $params);
+    }
+
+    // ユーザー名とメールアドレスからユーザーを取得
+    public function getUserByCredentials($username, $email)
+    {
+        $query = "SELECT * FROM users WHERE username = :username AND email = :email";
+        $params = array(':username' => $username, ':email' => $email);
+
+        return $this->dbConnector->fetchSingleResult($query, $params);
     }
 }

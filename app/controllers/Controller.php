@@ -1,14 +1,17 @@
 <?php
 namespace app\controllers;
 
+use util\Router;
 use app\models\UserModel;
 
 # Controller.php
 class Controller {
-    protected $basicText;  // プロパティを追加
+    protected $basicText;
+    protected $router;
     protected $userModel;
 
     public function __construct() {
+        $this->router = new Router();
         $this->userModel = new UserModel();
     }
 

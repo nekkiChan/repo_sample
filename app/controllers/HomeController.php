@@ -14,13 +14,14 @@ class HomeController extends Controller {
             $username = $_POST['username'];
             $email = $_POST['email'];
 
-            echo "$username<br>$email";
+            $this->router->redirectTo('test');
 
             // ユーザーデータをデータベースに登録
             $this->userModel->insertUserData($username, $email);
 
             // 登録後の処理（例: 成功メッセージを表示するなど）
             echo "User registered successfully!";
+
         } else {
             // フォームを表示
             include(__DIR__ . '/../views/test.php');

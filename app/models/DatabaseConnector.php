@@ -83,4 +83,16 @@ class DatabaseConnector
             return null;
         }
     }
+
+    public function fetchSingleResult($query, $params)
+    {
+        try {
+            $statement = $this->connection->prepare($query);
+            $statement->execute($params);
+            return $statement->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Error fetching data: " . $e->getMessage() . "<br>";
+            return null;
+        }
+    }
 }
