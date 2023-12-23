@@ -7,35 +7,29 @@ class LoginView extends View
 {
     public function generateLoginForm()
     {
+        echo $this->renderHeader();
+
         // バッファリングを開始
         ob_start();
 
         ?>
-        <!DOCTYPE html>
-        <html>
+        <h2>Login</h2>
+        <!-- ログインボタンを押すとホーム画面へ -->
+        <form method="post" action="<?php echo $this->router->generateUrl('home'); ?>">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required><br>
 
-        <head>
-            <title>Login</title>
-        </head>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required><br>
 
-        <body>
-            <h2>Login</h2>
-            <!-- ログインボタンを押すとホーム画面へ -->
-            <form method="post" action="<?php echo $this->router->generateUrl('home'); ?>">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required><br>
-
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required><br>
-
-                <input type="submit" value="Login">
-            </form>
-        </body>
-
-        </html>
+            <input type="submit" value="Login">
+        </form>
+        
         <?php
+        echo $this->renderFooter();
 
         $html = ob_get_clean();  // バッファの内容を取得してバッファリングを終了
+
         return $html;
     }
 
