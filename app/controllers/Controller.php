@@ -6,11 +6,20 @@ use app\models\UserModel;
 # Controller.php
 class Controller {
     protected $basicText;  // プロパティを追加
+    protected $userModel;
+
+    public function __construct() {
+        $this->userModel = new UserModel();
+    }
+
+    public function createUserTable() {
+        // usersテーブルを作成
+        $this->userModel->createUsersTable();
+    }
 
     public function index() {
         $this->basicText = 'This is Basic';  // プロパティに値を設定
-        $userModel = new UserModel();
-        $userName = $userModel->getUserName();
+        $userName = 'Jone';
         include(__DIR__ . '/../views/home.php');
     }
 
