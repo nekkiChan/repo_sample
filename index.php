@@ -1,25 +1,24 @@
 <?php
+// index.php
+
+include_once 'config.php';
+
 spl_autoload_register(function ($className) {
-    $className = str_replace("\\", DIRECTORY_SEPARATOR, $className);
-    
-    // コントローラーのクラスファイルを探す
-    $controllerClassFile = __DIR__ . DIRECTORY_SEPARATOR . 'controllers' . DIRECTORY_SEPARATOR . $className . '.php';
-    if (file_exists($controllerClassFile)) {
-        include_once $controllerClassFile;
-        return;
-    }
+    $classFile = __DIR__ . '\\' . $className . '.php';
 
-    // モデルのクラスファイルを探す
-    $modelClassFile = __DIR__ . DIRECTORY_SEPARATOR . 'models' . DIRECTORY_SEPARATOR . $className . '.php';
-    if (file_exists($modelClassFile)) {
-        include_once $modelClassFile;
-        return;
+    if (file_exists($classFile)) {
+        include_once $classFile;
+    } else {
+        echo "Class file not found: $className";
+        exit;
     }
-
-    // クラスファイルが見つからない場合のエラーハンドリング
-    echo "Class file not found: $className";
-    exit;
 });
 
-$controller = new HomeController();
-$controller->index();
+require_once 'route.php';
+
+$router = new Router();
+$router->addRoute('', 'HomeController', 'index');
+$router->addRoute('test', 'HomeController', 'test');
+
+$route = isset($_GET['url']) ? $_GET['url'] : '';
+$router->dispatch($route);
