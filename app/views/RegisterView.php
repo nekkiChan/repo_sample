@@ -3,9 +3,9 @@ namespace app\views;
 
 use app\views\View;
 
-class LoginView extends View
+class RegisterView extends View
 {
-    public function generateLoginForm()
+    public function generateRegisterForm()
     {
         echo $this->renderHeader();
 
@@ -13,17 +13,21 @@ class LoginView extends View
         ob_start();
 
         ?>
-        <h1>Login</h1>
-        <!-- ログインボタンを押すとホーム画面へ -->
-        <form method="post" action="<?php echo $this->router->generateUrl('home'); ?>">
+        <h1>Register</h1>
+        <!-- レジスタボタンを押すとホーム画面へ -->
+        <form action="<?php echo $this->router->generateUrl('home'); ?>" method="post">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required><br>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required><br>
 
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required><br>
 
-            <input type="submit" value="Login">
+            <input type="submit" value="Register">
         </form>
+
 
         <?php
         echo $this->renderFooter();

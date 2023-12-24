@@ -22,9 +22,6 @@ class LoginController extends Controller
         // ログインフォームのHTMLを生成
         $loginForm = $this->loginView->generateLoginForm();
         echo $loginForm;
-
-        // 生成されたHTMLを変数として返す
-        return $loginForm;
     }
 
     // ログイン処理を実装

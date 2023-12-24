@@ -22,7 +22,8 @@ class UserModel
         CREATE TABLE IF NOT EXISTS users (
             id serial PRIMARY KEY,
             username VARCHAR(255) NOT NULL,
-            email VARCHAR(255) NOT NULL
+            email VARCHAR(255) NOT NULL,
+            password VARCHAR(255) NOT NULL,
             -- 他のカラムも必要に応じて追加
         );        
         ";

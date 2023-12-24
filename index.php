@@ -20,7 +20,7 @@ use util\Router;
 $router = new Router();
 $router->addRoute('', 'HomeController', 'index');
 $router->addRoute('home', 'HomeController', 'index');
-$router->addRoute('test', 'HomeController', 'test');
+$router->addRoute('register', 'RegisterController', 'index');
 $router->addRoute('login', 'LoginController', 'index');
 
 $route = isset($_GET['url']) ? $_GET['url'] : '';
