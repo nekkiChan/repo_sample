@@ -21,6 +21,7 @@ $router = new Router();
 $router->addRoute('', 'HomeController', 'index');
 $router->addRoute('home', 'HomeController', 'index');
 $router->addRoute('register', 'RegisterController', 'index');
+$router->addRoute('register/create', 'RegisterController', 'register');
 $router->addRoute('login', 'LoginController', 'index');
 
 $route = isset($_GET['url']) ? $_GET['url'] : '';

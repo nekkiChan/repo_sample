@@ -42,19 +42,46 @@ class Model
     }
 
     // プレースホルダーを使用したデータ挿入
-    protected function insertData($table, $columns, $data)
+    protected function insertData($table, $data)
     {
-        $query = "INSERT INTO $table ($columns[0], $columns[1]) VALUES (:$data[0], :$data[1])";
-        $params = array(':' . $columns[0] => $data[0], ':' . $columns[1] => $data[1]);
-
+        $this->dbConnector->connectToDatabase();
+        
+        $query = "INSERT INTO $table ";
+        $columns = implode(', ', array_keys($data));
+        $placeholders = implode(', ', array_map(function ($column) {
+            return ":$column";
+        }, array_keys($data)));
+    
+        $query .= "($columns) VALUES ($placeholders);";
+    
+        // プレースホルダー（SQLインジェクション対策）
+        $params = array();
+        foreach ($data as $key => $value) {
+            $params[":$key"] = $value;
+        }
+    
         $this->dbConnector->executeQueryWithParams($query, $params);
-    }
 
-    public function getDataByCredentials($table, $columns, $data)
+        $this->dbConnector->closeConnection();
+    }
+    
+    
+
+    public function getDataByCredentials($table, $data)
     {
-        $query = "SELECT * FROM $table WHERE $columns[0] = :$data[0] AND $columns[1] = :$data[1]";
-        $params = array(':' . $columns[0] => $data[0], ':' . $columns[1] => $data[1]);
+        $this->dbConnector->connectToDatabase();
 
+        $conditions = [];
+        $params = [];
+    
+        foreach ($data as $key => $value) {
+            $conditions[] = "$key = :$key";
+            $params[":$key"] = $value;
+        }
+    
+        $conditionString = implode(' AND ', $conditions);
+        $query = "SELECT * FROM $table WHERE $conditionString";
+    
         return $this->dbConnector->fetchSingleResult($query, $params);
-    }
+    }    
 }

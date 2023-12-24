@@ -15,7 +15,7 @@ class RegisterView extends View
         ?>
         <h1>Register</h1>
         <!-- レジスタボタンを押すとホーム画面へ -->
-        <form action="<?php echo $this->router->generateUrl('home'); ?>" method="post">
+        <form action="<?php echo $this->router->generateUrl('register/create'); ?>" method="post">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required><br>
 

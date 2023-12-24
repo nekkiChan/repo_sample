@@ -32,11 +32,9 @@ class UserModel extends Model
     }
 
     // プレースホルダーを使用したデータ挿入の例
-    public function insertUserData($username, $email)
+    public function insertUserData($data)
     {
-        $columns = ['username', 'email'];
-        $data = [$username, $email];
-        $this->insertData('user', $columns, $data);
+        $this->insertData('users', $data);
     }
 
     // ユーザー名とメールアドレスからユーザーを取得
@@ -44,6 +42,6 @@ class UserModel extends Model
     {
         $columns = ['username', 'email'];
         $data = [$username, $email];
-        return $this->getDataByCredentials('user', $columns, $data);
+        return $this->getDataByCredentials('users', $data);
     }
 }

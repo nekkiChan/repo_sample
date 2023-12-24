@@ -23,4 +23,23 @@ class RegisterController extends Controller
         $registerForm = $this->registerView->generateRegisterForm();
         echo $registerForm;
     }
+
+    public function register(){
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['url'])) {
+            // フォームが送信された場合
+
+            foreach ($_POST as $key => $value) {
+                $data[$key] = $value;
+            }
+
+            // ユーザーデータをデータベースに登録
+            $this->userModel->insertUserData($data);
+
+            // 登録後の処理（例: 成功メッセージを表示するなど）
+            echo "User registered successfully!";
+        } else {
+            // フォームを表示
+            // include(__DIR__ . '/../views/test.php');
+        }
+    }
 }
