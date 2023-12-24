@@ -12,32 +12,40 @@ class LoginController extends Controller
 
     public function __construct($userModel = null, $loginView = null)
     {
-        // 引数が提供されなかった場合は、デフォルトのインスタンスを作成
         $this->userModel = $userModel ?? new UserModel();
         $this->loginView = $loginView ?? new LoginView();
     }
 
     public function index()
     {
-        // ログインフォームのHTMLを生成
         $loginForm = $this->loginView->generateLoginForm();
         echo $loginForm;
     }
 
-    // ログイン処理を実装
-    public function login($username, $password)
+    public function auth()
     {
-        // 入力検証などのロジック
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $username = $_POST['username'] ?? '';
+            $password = $_POST['password'] ?? '';
 
-        // ユーザー認証
-        $credentials = $this->userModel->getUserCredentials($username);
+            // 入力検証などのロジック
+            if (empty($username) || empty($password)) {
+                $this->loginView->showError("Username and password are required");
+                return;
+            }
 
-        if ($credentials && $credentials['password'] === $password) {
-            // ログイン成功
-            // ここでセッションなどを扱う
-        } else {
-            // ログイン失敗
-            $this->loginView->showError("Invalid username or password");
+            // ユーザー認証
+            $data = ['username' => $username];
+            $credentials = $this->userModel->getUserByCredentials($data);
+
+            if ($credentials && password_verify($password, $credentials['password'])) {
+                // ログイン成功
+                // ここでセッションなどを扱う
+                echo 'Login successful!';
+            } else {
+                // ログイン失敗
+                $this->loginView->showError("Invalid username or password");
+            }
         }
     }
 }

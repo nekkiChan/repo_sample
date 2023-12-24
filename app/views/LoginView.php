@@ -15,7 +15,7 @@ class LoginView extends View
         ?>
         <h1>Login</h1>
         <!-- ログインボタンを押すとホーム画面へ -->
-        <form method="post" action="<?php echo $this->router->generateUrl('home'); ?>">
+        <form method="post" action="<?php echo $this->router->generateUrl('login/auth'); ?>">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required><br>
 

@@ -66,17 +66,25 @@ class Model
 
     public function getDataByCredentials($table, $data)
     {
-        $conditions = [];
-        $params = [];
+        // WHERE句の条件を格納する配列
+        $conditions = array();
     
+        // プレースホルダー（SQLインジェクション対策）
+        $params = array();
+    
+        // $data の各要素に対して条件を構築
         foreach ($data as $key => $value) {
             $conditions[] = "$key = :$key";
             $params[":$key"] = $value;
         }
     
-        $conditionString = implode(' AND ', $conditions);
-        $query = "SELECT * FROM $table WHERE $conditionString";
+        $conditionStr = implode(' AND ', $conditions);
     
-        return $this->dbConnector->fetchSingleResult($query, $params);
-    }    
+        $query = "SELECT * FROM $table WHERE $conditionStr";
+        
+        $result = $this->dbConnector->fetchSingleResult($query, $params);
+    
+        return $result;
+    }
+    
 }

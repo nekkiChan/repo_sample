@@ -39,7 +39,7 @@ class UserModel extends Model
         $this->insertData($this->tableName, $data);
     }
 
-    // ユーザー名とメールアドレスからユーザーを取得
+    // ユーザー名からユーザーを取得
     public function getUserByCredentials($data)
     {
         return $this->getDataByCredentials($this->tableName, $data);

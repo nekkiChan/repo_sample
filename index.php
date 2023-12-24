@@ -23,6 +23,7 @@ $router->addRoute('home', 'HomeController', 'index');
 $router->addRoute('register', 'RegisterController', 'index');
 $router->addRoute('register/create', 'RegisterController', 'register');
 $router->addRoute('login', 'LoginController', 'index');
+$router->addRoute('login/auth', 'LoginController', 'auth');
 
 $route = isset($_GET['url']) ? $_GET['url'] : '';
 $router->dispatch($route);
