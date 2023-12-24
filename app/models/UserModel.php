@@ -1,6 +1,8 @@
 <?php
 namespace app\models;
 
+use \Exception;
+
 use app\models\DatabaseConnector;
 
 class UserModel
@@ -12,7 +14,25 @@ class UserModel
     {
         // データベース
         $this->dbConnector = new DatabaseConnector();
-        $this->createUsersTable();
+
+        // テーブルが存在しない場合のみ作成
+        if (!$this->isUsersTableExists()) {
+            $this->createUsersTable();
+        }
+    }
+
+    private function isUsersTableExists()
+    {
+        $query = "SELECT 1 FROM users LIMIT 1";
+        try {
+            $this->dbConnector->connectToDatabase();
+            $result = $this->dbConnector->executeQuery($query);
+            $this->dbConnector->closeConnection();
+            return $result !== false;
+        } catch (Exception $e) {
+            // エラーが発生した場合も存在しないとみなす
+            return false;
+        }
     }
 
     public function createUsersTable()
@@ -23,9 +43,9 @@ class UserModel
             id serial PRIMARY KEY,
             username VARCHAR(255) NOT NULL,
             email VARCHAR(255) NOT NULL,
-            password VARCHAR(255) NOT NULL,
+            password VARCHAR(255) NOT NULL
             -- 他のカラムも必要に応じて追加
-        );        
+        )       
         ";
 
         $this->dbConnector->executeQuery($query);

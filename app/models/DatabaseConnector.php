@@ -51,13 +51,16 @@ class DatabaseConnector
         try {
             // SQLクエリを実行する前にエラーログに記録
             error_log("Executing query: $query");
+            $this->logModel->logMessage("Executing query: $query");
 
             $this->connection->exec($query);
             // エラーログに成功情報を記録
             error_log("Query executed successfully.");
+            $this->logModel->logMessage("Query executed successfully.");
         } catch (PDOException $e) {
             // エラーログにエラーメッセージを記録
             error_log("Error executing query: " . $e->getMessage());
+            $this->logModel->logMessage("Error executing query: " . $e->getMessage());
         }
     }
 
