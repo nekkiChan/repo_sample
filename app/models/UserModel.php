@@ -9,9 +9,11 @@ class UserModel extends Model
     {
         // データベース
         $this->dbConnector = new DatabaseConnector();
+        // テーブル名
+        $this->tableName = 'users';
 
         // テーブルが存在しない場合のみ作成
-        if (!$this->isTableExists('users')) {
+        if (!$this->isTableExists($this->tableName)) {
             $this->createTable($this->getQueryUsersTable());
         }
     }
@@ -19,7 +21,7 @@ class UserModel extends Model
     public function getQueryUsersTable()
     {
         $query = "
-        CREATE TABLE IF NOT EXISTS users (
+        CREATE TABLE IF NOT EXISTS $this->tableName (
             id serial PRIMARY KEY,
             username VARCHAR(255) NOT NULL,
             email VARCHAR(255) NOT NULL,
@@ -34,12 +36,12 @@ class UserModel extends Model
     // プレースホルダーを使用したデータ挿入の例
     public function insertUserData($data)
     {
-        $this->insertData('users', $data);
+        $this->insertData($this->tableName, $data);
     }
 
     // ユーザー名とメールアドレスからユーザーを取得
     public function getUserByCredentials($data)
     {
-        return $this->getDataByCredentials('users', $data);
+        return $this->getDataByCredentials($this->tableName, $data);
     }
 }

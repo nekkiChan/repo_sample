@@ -8,6 +8,7 @@ use \app\models\DatabaseConnector;
 
 class Model
 {
+    protected $tableName;
     protected $logModel;
     protected $dbConnector;
 
@@ -23,10 +24,8 @@ class Model
     {
         $query = "SELECT 1 FROM $table LIMIT 1";
         try {
-            $this->dbConnector->connectToDatabase();
             // 戻り値を無視する
             $this->dbConnector->executeQuery($query);
-            $this->dbConnector->closeConnection();
             return true;
         } catch (Exception $e) {
             // エラーが発生した場合も存在しないとみなす
@@ -36,16 +35,12 @@ class Model
 
     protected function createTable($query)
     {
-        $this->dbConnector->connectToDatabase();
         $this->dbConnector->executeQuery($query);
-        $this->dbConnector->closeConnection();
     }
 
     // プレースホルダーを使用したデータ挿入
     protected function insertData($table, $data)
-    {
-        $this->dbConnector->connectToDatabase();
-        
+    {   
         $query = "INSERT INTO $table ";
         $columns = implode(', ', array_keys($data));
         $placeholders = implode(', ', array_map(function ($column) {
@@ -67,14 +62,10 @@ class Model
         }
     
         $this->dbConnector->executeQueryWithParams($query, $params);
-    
-        $this->dbConnector->closeConnection();
     }
 
     public function getDataByCredentials($table, $data)
     {
-        $this->dbConnector->connectToDatabase();
-
         $conditions = [];
         $params = [];
     

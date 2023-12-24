@@ -50,11 +50,12 @@ class DatabaseConnector
     public function executeQuery($query)
     {
         try {
+            $this->connectToDatabase();
             // SQLクエリを実行する前にエラーログに記録
             error_log("Executing query: $query");
             $this->logModel->logMessage("Executing query: $query");
-
             $this->connection->exec($query);
+            $this->closeConnection();
             // エラーログに成功情報を記録
             error_log("Query executed successfully.");
             $this->logModel->logMessage("Query executed successfully.");
@@ -69,8 +70,10 @@ class DatabaseConnector
     public function executeQueryWithParams($query, $params)
     {
         try {
+            $this->connectToDatabase();
             $statement = $this->connection->prepare($query);
             $statement->execute($params);
+            $this->closeConnection();
             $this->logModel->logMessage("Query executed successfully.");
         } catch (PDOException $e) {
             $this->logModel->logMessage("Error executing query: " . $e->getMessage());
@@ -80,7 +83,9 @@ class DatabaseConnector
     public function fetchAll($query)
     {
         try {
+            $this->connectToDatabase();
             $result = $this->connection->query($query);
+            $this->closeConnection();
             return $result->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             $this->logModel->logMessage("Error fetching data: " . $e->getMessage());
@@ -91,8 +96,10 @@ class DatabaseConnector
     public function fetchSingleResult($query, $params)
     {
         try {
+            $this->connectToDatabase();
             $statement = $this->connection->prepare($query);
             $statement->execute($params);
+            $this->closeConnection();
             return $statement->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             $this->logModel->logMessage("Error fetching data: " . $e->getMessage());
