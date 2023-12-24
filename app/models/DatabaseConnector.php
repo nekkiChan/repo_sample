@@ -36,6 +36,7 @@ class DatabaseConnector
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->logModel->logMessage("Connected to the <$this->database> database.");
         } catch (PDOException $e) {
+            error_log("Connection failed: " . $e->getMessage());
             $this->logModel->logMessage("Connection failed: " . $e->getMessage());
         }
     }
