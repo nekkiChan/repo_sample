@@ -12,12 +12,15 @@ class LoginController extends Controller
 
     public function __construct($userModel = null, $loginView = null)
     {
+        parent::__construct();
         $this->userModel = $userModel ?? new UserModel();
         $this->loginView = $loginView ?? new LoginView();
     }
 
     public function index()
     {
+        session_start();
+        var_dump($_SESSION);
         $loginForm = $this->loginView->generateLoginForm();
         echo $loginForm;
     }
@@ -40,12 +43,30 @@ class LoginController extends Controller
 
             if ($credentials && password_verify($password, $credentials['password'])) {
                 // ログイン成功
-                // ここでセッションなどを扱う
+                // セッション開始
+                session_start();
+
+                // ユーザー情報をセッションに保存
+                $_SESSION['user_id'] = $credentials['id'];
+                $_SESSION['username'] = $credentials['username'];
+
+                $this->router->redirectTo('home');
                 echo 'Login successful!';
             } else {
                 // ログイン失敗
                 $this->loginView->showError("Invalid username or password");
             }
         }
+    }
+
+    public function logout()
+    {
+        // セッション破棄
+        session_start();
+        session_destroy();
+
+        echo 'Logout successful!';
+
+        $this->router->redirectTo('login');
     }
 }

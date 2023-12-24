@@ -2,9 +2,20 @@
 namespace app\controllers;
 
 use app\controllers\Controller;
+use app\views\HomeView;
 
 class HomeController extends Controller {
+
+    protected $homeView;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->homeView = new HomeView();
+    }
+
     public function index() {
-        parent::index();  // 親クラスの index メソッドを呼び出す
+        $homeForm = $this->homeView->generateHomeView();
+        echo $homeForm;
     }
 }

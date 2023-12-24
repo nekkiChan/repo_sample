@@ -15,11 +15,6 @@ class Controller {
         $this->userModel = new UserModel();
     }
 
-    public function createUserTable() {
-        // usersテーブルを作成
-        $this->userModel->createUsersTable();
-    }
-
     public function index() {
         $this->basicText = 'This is Basic';  // プロパティに値を設定
         $userName = 'Jone';

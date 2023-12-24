@@ -43,8 +43,10 @@ class Router
 
     public function redirectTo($routeName)
     {
+        echo 'aaaa';
         // ルート名に基づいてURLを生成するロジック
         $url = $this->generateUrl($routeName);
+        echo $url;
         
         // リダイレクト
         header("Location: $url");

@@ -12,6 +12,7 @@ class RegisterController extends Controller
 
     public function __construct($userModel = null, $registerView = null)
     {
+        parent::__construct();
         // 引数が提供されなかった場合は、デフォルトのインスタンスを作成
         $this->userModel = $userModel ?? new UserModel();
         $this->registerView = $registerView ?? new RegisterView();
