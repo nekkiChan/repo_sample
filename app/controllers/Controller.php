@@ -11,6 +11,7 @@ class Controller {
     protected $userModel;
 
     public function __construct() {
+        $this->logModel = new LogModel();
         $this->router = new Router();
         $this->userModel = new UserModel();
     }

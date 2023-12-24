@@ -23,21 +23,4 @@ class RegisterController extends Controller
         $registerForm = $this->registerView->generateRegisterForm();
         echo $registerForm;
     }
-
-    // // ログイン処理を実装
-    // public function login($username, $password)
-    // {
-    //     // 入力検証などのロジック
-
-    //     // ユーザー認証
-    //     $credentials = $this->userModel->getUserCredentials($username);
-
-    //     if ($credentials && $credentials['password'] === $password) {
-    //         // ログイン成功
-    //         // ここでセッションなどを扱う
-    //     } else {
-    //         // ログイン失敗
-    //         $this->loginView->showError("Invalid username or password");
-    //     }
-    // }
 }

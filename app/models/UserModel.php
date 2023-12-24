@@ -12,12 +12,12 @@ class UserModel
     {
         // データベース
         $this->dbConnector = new DatabaseConnector();
-        $this->dbConnector->connectToDatabase();
         $this->createUsersTable();
     }
 
     public function createUsersTable()
     {
+        $this->dbConnector->connectToDatabase();
         $query = "
         CREATE TABLE IF NOT EXISTS users (
             id serial PRIMARY KEY,
@@ -29,6 +29,7 @@ class UserModel
         ";
 
         $this->dbConnector->executeQuery($query);
+        $this->dbConnector->closeConnection();
     }
 
     // プレースホルダーを使用したデータ挿入の例

@@ -4,6 +4,10 @@ namespace app\models;
 use \PDO;
 use \PDOException;
 
+use app\models\LogModel;
+
+;
+
 class DatabaseConnector
 {
 
@@ -13,12 +17,15 @@ class DatabaseConnector
     private $password;
     private $connection;
 
+    private $logModel;
+
     public function __construct()
     {
         $this->host = DB_HOST;
         $this->database = DB_NAME;
         $this->user = DB_USER;
         $this->password = DB_PASSWORD;
+        $this->logModel = new LogModel();
     }
 
     public function connectToDatabase()
@@ -27,23 +34,16 @@ class DatabaseConnector
             $dsn = "pgsql:host={$this->host};dbname={$this->database}";
             $this->connection = new PDO($dsn, $this->user, $this->password);
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            if (DEBUG_MODE) {
-                echo "Connected to the database.<br>";
-            }
+            $this->logModel->logMessage("Connected to the <$this->database> database.");
         } catch (PDOException $e) {
-            if (DEBUG_MODE) {
-                die("Connection failed: " . $e->getMessage());
-            }
+            $this->logModel->logMessage("Connection failed: " . $e->getMessage());
         }
     }
-
 
     public function closeConnection()
     {
         $this->connection = null;
-        if (DEBUG_MODE) {
-            echo "Connection closed.<br>";
-        }
+        $this->logModel->logMessage("Connection closed.");
     }
 
     public function executeQuery($query)
@@ -67,9 +67,9 @@ class DatabaseConnector
         try {
             $statement = $this->connection->prepare($query);
             $statement->execute($params);
-            echo "Query executed successfully.<br>";
+            $this->logModel->logMessage("Query executed successfully.");
         } catch (PDOException $e) {
-            echo "Error executing query: " . $e->getMessage() . "<br>";
+            $this->logModel->logMessage("Error executing query: " . $e->getMessage());
         }
     }
 
@@ -79,7 +79,7 @@ class DatabaseConnector
             $result = $this->connection->query($query);
             return $result->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            echo "Error fetching data: " . $e->getMessage() . "<br>";
+            $this->logModel->logMessage("Error fetching data: " . $e->getMessage());
             return null;
         }
     }
@@ -91,7 +91,7 @@ class DatabaseConnector
             $statement->execute($params);
             return $statement->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            echo "Error fetching data: " . $e->getMessage() . "<br>";
+            $this->logModel->logMessage("Error fetching data: " . $e->getMessage());
             return null;
         }
     }
