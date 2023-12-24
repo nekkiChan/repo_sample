@@ -38,10 +38,8 @@ class UserModel extends Model
     }
 
     // ユーザー名とメールアドレスからユーザーを取得
-    public function getUserByCredentials($username, $email)
+    public function getUserByCredentials($data)
     {
-        $columns = ['username', 'email'];
-        $data = [$username, $email];
         return $this->getDataByCredentials('users', $data);
     }
 }

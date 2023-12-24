@@ -57,15 +57,19 @@ class Model
         // プレースホルダー（SQLインジェクション対策）
         $params = array();
         foreach ($data as $key => $value) {
-            $params[":$key"] = $value;
+            // カラムが password の場合にハッシュ化
+            if ($key === 'password') {
+                $hashedPassword = password_hash($value, PASSWORD_DEFAULT);
+                $params[":$key"] = $hashedPassword;
+            } else {
+                $params[":$key"] = $value;
+            }
         }
     
         $this->dbConnector->executeQueryWithParams($query, $params);
-
+    
         $this->dbConnector->closeConnection();
     }
-    
-    
 
     public function getDataByCredentials($table, $data)
     {
