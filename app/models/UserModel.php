@@ -7,10 +7,13 @@ class UserModel extends Model
 {
     public function __construct()
     {
+        parent::__construct();
         // データベース
         $this->dbConnector = new DatabaseConnector();
         // テーブル名
         $this->tableName = 'users';
+
+        $this->logModel->logMessage($this->getQueryUsersTable());
 
         // テーブルが存在しない場合のみ作成
         if (!$this->isTableExists($this->tableName)) {
