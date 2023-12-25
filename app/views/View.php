@@ -21,17 +21,21 @@ class View
 
         <head>
             <title>Login</title>
+            <link rel="stylesheet" type="text/css" href=<?php echo CSS_Path; ?>>
         </head>
 
         <body>
-            <?php
-            return ob_get_clean();
+            <div class="content">
+                <?php
+                return ob_get_clean();
     }
 
     public function renderFooter()
     {
         ob_start();
         ?>
+            </div>
+            <!-- ./content -->
         </body>
 
         </html>

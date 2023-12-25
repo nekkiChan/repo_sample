@@ -16,5 +16,9 @@ define('HOME_URL', '\\repo_sample\\');
 define('APP_Path', 'app\\');
 // コントローラーディレクトリ設定
 define('Controller_Path', 'controllers\\');
+// viewsディレクトリ設定
+define('VIEW_Path', APP_Path.'views\\');
+// CSSディレクトリ設定
+define('CSS_Path', VIEW_Path.'css\\style.css');
 
 ?>
