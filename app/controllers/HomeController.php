@@ -24,7 +24,8 @@ class HomeController extends Controller
         echo $homeForm;
     }
 
-    public function arrayTest(){
+    public function arrayTest()
+    {
         $data = [
             'id' => [1, 2, 3],
             'name' => ['taro', 'jiro', 'hanako', 'suzuki'],
@@ -33,7 +34,7 @@ class HomeController extends Controller
         print_r($data);
         echo '<br>';
         echo '<br>';
-        
+
         $result = [];
         $count = count($data['id']); // すべての配列が同じ要素数であることを仮定します    
         for ($i = 0; $i < $count; $i++) {
@@ -43,18 +44,22 @@ class HomeController extends Controller
                 'age' => $data['age'][$i],
             ];
         }
-        
+
         print_r($result);
     }
 
     public function uploadTest()
     {
         $data = [
-            ['id' => 1, 'name' => 'taro', 'age' => 25],
-            ['id' => 2, 'name' => 'jiro', 'age' => 30],
-            ['id' => 3, 'name' => 'hanako', 'age' => 11],
+            ['username' => '管理者太郎'],
+            ['username' => 'ゲスト次郎'],
         ];
-        $viewData = ['data' => $data];
+        $query = "SELECT id, username, email FROM users";
+        $viewData = [
+            'data' => $data,
+            'users' => $this->userModel->dbConnector->fetchAll($query),
+        ];
+        $this->userModel->dbConnector->update($data, ['id' => 1]);
         // var_dump($viewData);
         $testForm = $this->testView->generateTestView($viewData);
         echo $testForm;
@@ -64,37 +69,20 @@ class HomeController extends Controller
     {
         // フォームが送信された場合の処理
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            foreach ($_POST as $key => $value) {
-                var_dump($key);
-                echo ' : ';
-                var_dump($value);
-                echo '<br>';
+
+            $keys = array_keys($_POST);
+
+            $data = array_map(function (...$values) use ($keys) {
+                return array_combine($keys, $values);
+            }, ...array_values($_POST));
+
+            // 変更されているか確認
+
+
+            // アップデート
+            foreach ($data as $key => $value) {
+                $this->userModel->updateUserData($data[$key]);
             }
-            $changedInputs = array();
-
-            foreach ($_POST as $key => $value) {
-                // 各input要素の変更を確認
-                if (strpos($key, '_original') !== false) {
-                    // オリジナルの隠しフィールドは無視する
-                    continue;
-                }
-
-                $originalKey = $key . '_original';
-                if (isset($_POST[$originalKey]) && $value !== $_POST[$originalKey]) {
-                    $id = $_POST[$key . '_id'];
-                    $changedInputs[$key] = [
-                        'id' => $id,
-                        'value' => $value
-                    ];
-                }
-            }
-
-            foreach ($changedInputs as $key => $value) {
-                var_dump($value);
-                echo '<br>';
-            }
-
-            // $changedInputsに変更されたinput要素の値が格納される
         }
     }
 

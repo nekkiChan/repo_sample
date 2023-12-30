@@ -10,7 +10,7 @@ class Model
 {
     protected $tableName;
     protected $logModel;
-    protected $dbConnector;
+    public $dbConnector;
 
     public function __construct()
     {
@@ -66,6 +66,41 @@ class Model
         }, array_keys($data)));
 
         $query .= "($columns) VALUES ($placeholders);";
+
+        // プレースホルダー（SQLインジェクション対策）
+        $params = array();
+        foreach ($data as $key => $value) {
+            // カラムが password の場合にハッシュ化
+            if ($key === 'password') {
+                $hashedPassword = password_hash($value, PASSWORD_DEFAULT);
+                $params[":$key"] = $hashedPassword;
+            } else {
+                $params[":$key"] = $value;
+            }
+        }
+
+        $this->dbConnector->executeQueryWithParams($query, $params);
+    }
+
+    // プレースホルダーを使用したデータ更新（１つのみ）
+    // 例： $data
+    // array(3) { ["id"]=> string(1) "1" ["username"]=> string(15) "管理者太郎" ["email"]=> string(14) "taro@admin.com" }
+    protected function updateData($table, $data)
+    {
+        $query = "UPDATE $table SET ";
+
+        $columns = array_keys($data);
+        $where = '';
+
+        foreach ($columns as $column) {
+            if ($column == 'id') {
+                $where .= "$column = :$column";
+            } else {
+                $query .= "$column = :$column, ";
+            }
+        }
+        $query = rtrim($query, ', ');
+        $query .= " WHERE $where";
 
         // プレースホルダー（SQLインジェクション対策）
         $params = array();

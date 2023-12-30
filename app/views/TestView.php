@@ -8,7 +8,6 @@ class TestView extends View
     public function generateTestView($viewData)
     {
         session_start();
-        var_dump($_SESSION);
         echo $this->renderHeader();
 
         // バッファリングを開始
@@ -19,28 +18,21 @@ class TestView extends View
         <!-- ボタンを押すとホーム画面へ -->
         <form method="post" action="<?php echo $this->router->generateUrl('test/upload/result'); ?>">
             <?php
-            $columns = ['id', 'name', 'age'];
-
-            foreach ($viewData['data'] as $key => $value) {
-                $id = $value['id'];
-                $name = $value['name'];
-                $age = $value['age'];
+            foreach ($viewData['users'] as $value) {
+                foreach ($value as $k => $val) {
+                    $data = $value[$k];
+                    if ($k === 'id') { ?>
+                        <input type="hidden" name="<?= $k ?>[]" value="<?= $data ?>">
+                    <?php } else { ?>
+                        <label for="<?= $k ?>[]">
+                            <?= $k ?>
+                        </label>
+                        <input type="text" id="<?= $k ?>[]" name="<?= $k ?>[]" value=<?= $data ?>>
+                        <?php
+                    }
+                }
+                echo "<br>";
                 ?>
-
-                <input type="hidden" name="<?php echo $columns[0]; ?>" value="<?php echo $id; ?>">
-
-                <label for="name_<?php echo $id; ?>">
-                    <?php echo $columns[1]; ?>
-                </label>
-                <input type="text" id="name_<?php echo $id; ?>" name="name_<?php echo $id; ?>" value="<?php echo $name; ?>">
-                <input type="hidden" name="name_<?php echo $id; ?>_original" value="<?php echo $name; ?>">
-
-                <label for="age_<?php echo $id; ?>">
-                    <?php echo $columns[2]; ?>
-                </label>
-                <input type="text" id="age_<?php echo $id; ?>" name="age_<?php echo $id; ?>" value="<?php echo $age; ?>">
-                <input type="hidden" name="age_<?php echo $id; ?>_original" value="<?php echo $age; ?>">
-                <br><br>
                 <?php
             }
             ?>
@@ -51,17 +43,17 @@ class TestView extends View
         </form>
 
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                console.log('DOMが読み込まれました。');
-                var inputs = document.querySelectorAll('input[type="text"]');
-                inputs.forEach(function (input) {
-                    var originalValue = input.value;
-                    var correspondingHiddenInput = input.parentElement.querySelector('input[name="' + input.name + '_original"]');
-                    input.addEventListener('input', function () {
-                        correspondingHiddenInput.value = originalValue; // 隠し要素の値を更新
-                    });
-                });
-            });
+            // document.addEventListener('DOMContentLoaded', function () {
+            //     console.log('DOMが読み込まれました。');
+            //     var inputs = document.querySelectorAll('input[type="text"]');
+            //     inputs.forEach(function (input) {
+            //         var originalValue = input.value;
+            //         var correspondingHiddenInput = input.parentElement.querySelector('input[name="' + input.name + '_original"]');
+            //         input.addEventListener('input', function () {
+            //             correspondingHiddenInput.value = originalValue; // 隠し要素の値を更新
+            //         });
+            //     });
+            // });
         </script>
 
         <?php
