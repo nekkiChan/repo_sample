@@ -42,11 +42,16 @@ class UserModel extends Model
         $this->insertData($this->tableName, $data);
     }
 
-        // プレースホルダーを使用したデータ更新
-        public function updateUserData($data)
-        {
-            $this->updateData($this->tableName, $data);
-        }
+    // プレースホルダーを使用したデータ更新
+    public function updateUserData($data)
+    {
+        $this->updateData($this->tableName, $data);
+    }
+
+    public function compareUserDataWithDB($data)
+    {
+        return $this->compareDataWithDB($this->tableName, $data);
+    }
 
     // ユーザー名からユーザーを取得
     public function getUserByCredentials($data)

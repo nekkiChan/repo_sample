@@ -20,18 +20,6 @@ class Model
         $this->dbConnector = new DatabaseConnector();
     }
 
-    // protected function isTableExists($table)
-    // {
-    //     $query = "SELECT 1 FROM $table LIMIT 1";
-    //     try {
-    //         // 戻り値を無視する
-    //         $this->dbConnector->executeQuery($query);
-    //         return true;
-    //     } catch (Exception $e) {
-    //         // エラーが発生した場合も存在しないとみなす
-    //         return false;
-    //     }
-    // }
     protected function isTableExists($table)
     {
         $query = "
@@ -80,6 +68,16 @@ class Model
         }
 
         $this->dbConnector->executeQueryWithParams($query, $params);
+    }
+
+    /**
+     * 得られたデータがDBのものと変更されているか確認するメソッド
+     * @param $data array(3) { ["id"]=> string(1) "1" ["username"]=> string(15) "管理者太郎" ["email"]=> string(14) "taro@admin.com" }
+     */
+    protected function compareDataWithDB($table, $data){
+        $existData = $this->getDataByCredentials($table, ['id' => $data['id']]);
+        $existData = array_intersect_key($existData, array_flip(array_keys($data)));
+        return array_diff($existData, $data) && array_diff($data, $existData);
     }
 
     // プレースホルダーを使用したデータ更新（１つのみ）

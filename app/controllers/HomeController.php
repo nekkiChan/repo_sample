@@ -59,7 +59,6 @@ class HomeController extends Controller
             'data' => $data,
             'users' => $this->userModel->dbConnector->fetchAll($query),
         ];
-        $this->userModel->dbConnector->update($data, ['id' => 1]);
         // var_dump($viewData);
         $testForm = $this->testView->generateTestView($viewData);
         echo $testForm;
@@ -76,12 +75,14 @@ class HomeController extends Controller
                 return array_combine($keys, $values);
             }, ...array_values($_POST));
 
-            // 変更されているか確認
-
-
-            // アップデート
             foreach ($data as $key => $value) {
-                $this->userModel->updateUserData($data[$key]);
+                // 変更されているか確認
+                if ($this->userModel->compareUserDataWithDB($data[$key])) {
+                    // アップデート
+                    $this->userModel->updateUserData($data[$key]);
+                }else{
+                echo $data[$key]['username'].'のデータに変更はありません<br>';
+                }
             }
         }
     }
