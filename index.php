@@ -25,9 +25,14 @@ $router->addRoute('register/create', 'RegisterController', 'register');
 $router->addRoute('login', 'LoginController', 'index');
 $router->addRoute('login/auth', 'LoginController', 'auth');
 $router->addRoute('login/logout', 'LoginController', 'logout');
+// アップロード
 $router->addRoute('test/upload', 'HomeController', 'uploadTest');
 $router->addRoute('test/upload/result', 'HomeController', 'uploadTestResult');
+// 配列
 $router->addRoute('test/array', 'HomeController', 'arrayTest');
+// 画像ボタン
+$router->addRoute('test/imgbtn', 'HomeController', 'imgBtnTest');
+$router->addRoute('test/imgbtnResult', 'HomeController', 'imgBtnTestResult');
 
 $route = isset($_GET['url']) ? $_GET['url'] : '';
 $router->dispatch($route);

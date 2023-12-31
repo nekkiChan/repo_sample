@@ -50,13 +50,8 @@ class HomeController extends Controller
 
     public function uploadTest()
     {
-        $data = [
-            ['username' => '管理者太郎'],
-            ['username' => 'ゲスト次郎'],
-        ];
         $query = "SELECT id, username, email FROM users";
         $viewData = [
-            'data' => $data,
             'users' => $this->userModel->dbConnector->fetchAll($query),
         ];
         // var_dump($viewData);
@@ -85,6 +80,21 @@ class HomeController extends Controller
                 }
             }
         }
+    }
+
+    public function imgBtnTest()
+    {
+        $query = "SELECT id, username, email FROM users";
+        $viewData = [
+            'users' => $this->userModel->dbConnector->fetchAll($query),
+        ];
+        $testForm = $this->testView->generateImgBtnTestView($viewData);
+        echo $testForm;
+    }
+
+    public function imgBtnTestResult()
+    {
+
     }
 
 }

@@ -37,7 +37,6 @@ class Router
     public function generateUrl($routeName)
     {
         // ルート名に基づいてURLを生成するロジック
-        // 例：$routeNameが'test'なら、'/repo_sample/test'を生成
         return HOME_URL . $routeName;
     }
 

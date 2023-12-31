@@ -21,7 +21,7 @@ class View
 
         <head>
             <title>Login</title>
-            <link rel="stylesheet" type="text/css" href=<?php echo CSS_Path; ?>>
+            <link rel="stylesheet" type="text/css" href="<?= CSS_Path ?>style.css">
         </head>
 
         <body>
