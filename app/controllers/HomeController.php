@@ -75,8 +75,8 @@ class HomeController extends Controller
                 if ($this->userModel->compareUserDataWithDB($data[$key])) {
                     // アップデート
                     $this->userModel->updateUserData($data[$key]);
-                }else{
-                echo $data[$key]['username'].'のデータに変更はありません<br>';
+                } else {
+                    echo $data[$key]['username'] . 'のデータに変更はありません<br>';
                 }
             }
         }
@@ -106,20 +106,46 @@ class HomeController extends Controller
 
     public function calendarTest()
     {
-        $query = "SELECT id, username, email FROM users";
-        $viewData = [
-            'users' => $this->userModel->dbConnector->fetchAll($query),
-        ];
-        $testForm = $this->testView->generateCalenderTestView($viewData);
-        
-        // echo $testForm;
+        // フォームが送信されたかどうかを確認
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // POSTデータを取得
+            $postedYear = isset($_POST['year']) ? $_POST['year'] : date('Y');
+            $postedMonth = isset($_POST['month']) ? $_POST['month'] : date('n');
+
+            var_dump($postedYear);
+
+            // ここで取得したデータを使って必要な処理を行う
+            // 例えば、データベースから新しいカレンダー情報を取得するなど
+            // ...
+
+            // 取得したデータをビューに渡す
+            $viewData = [
+                'users' => [], // 仮に空のユーザーリストを渡す例
+            ];
+            $testForm = $this->testView->generateCalenderTestView($viewData);
+
+            echo $testForm;
+        } else {
+            // フォームがまだ送信されていない場合は通常の表示を行う
+            $query = "SELECT id, username, email FROM users";
+            $users = $this->userModel->dbConnector->fetchAll($query);
+            usort($users, function ($a, $b) {
+                return $a['id'] - $b['id'];
+            });
+            $viewData = [
+                'users' => $users,
+            ];
+            $testForm = $this->testView->generateCalenderTestView($viewData);
+
+            echo $testForm;
+        }
     }
 
-    public function calendarResult()
+    public function calendarTestResult()
     {
         // フォームが送信された場合の処理
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            var_dump($_POST);
+        if ($_SERVER["REQUEST_METHOD"] == "GET") {
+            var_dump($_GET);
         }
     }
 

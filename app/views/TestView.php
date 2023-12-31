@@ -179,7 +179,54 @@ class TestView extends View
         ob_start();
 
         ?>
-        <h1>テスト画面</h1>
+
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f4f4f4;
+            }
+
+            .calendar {
+                max-width: 600px;
+                margin: 20px auto;
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 5px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            th,
+            td {
+                padding: 10px;
+                text-align: center;
+            }
+
+            th {
+                background-color: #333;
+                color: #fff;
+            }
+
+            td {
+                border: 1px solid #ddd;
+            }
+
+            tr:nth-child(even) {
+                background-color: #f9f9f9;
+            }
+        </style>
+
+        <h1>calendarテスト画面</h1>
+        <div class="calendar">
+            <?php include 'util/calendar.php'; ?>
+        </div>
+
         <!-- ボタンを押すとホーム画面へ -->
         <form method="post" action="<?php echo $this->router->generateUrl('test/calendarResult'); ?>">
             <input type="submit" value="Submit">
