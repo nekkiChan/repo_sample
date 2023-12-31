@@ -223,12 +223,21 @@ class TestView extends View
         </style>
 
         <h1>calendarテスト画面</h1>
-        <div class="calendar">
-            <?php include 'util/calendar.php'; ?>
-        </div>
 
         <!-- ボタンを押すとホーム画面へ -->
-        <form method="post" action="<?php echo $this->router->generateUrl('test/calendarResult'); ?>">
+        <form method="post" action="<?= $this->router->generateUrl('test/calendar'); ?>">
+            <div class="calendar">
+                <input type="hidden" name="date" value="<?= $viewData['date'] ?>">
+                <button name="option" value="previous">
+                    前月へ
+                </button>
+                <button name="option" value="next">
+                    次月へ
+                </button>
+                <?php
+                $this->calendar->generateCalendar($viewData['date']);
+                ?>
+            </div>
             <input type="submit" value="Submit">
         </form>
 

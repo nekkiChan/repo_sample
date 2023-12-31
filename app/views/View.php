@@ -2,14 +2,17 @@
 namespace app\views;
 
 use util\Router;
+use util\Calendar;
 
 class View
 {
     protected $router;
+    protected $calendar;
 
     public function __construct()
     {
         $this->router = new Router();
+        $this->calendar = new Calendar();
     }
 
     public function renderHeader()

@@ -106,21 +106,23 @@ class HomeController extends Controller
 
     public function calendarTest()
     {
+        $timestamp = strtotime(date('Y-m-d'));
+        $date = date("Y-m-d", $timestamp);
+
         // フォームが送信されたかどうかを確認
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // POSTデータを取得
-            $postedYear = isset($_POST['year']) ? $_POST['year'] : date('Y');
-            $postedMonth = isset($_POST['month']) ? $_POST['month'] : date('n');
+            $today = $_POST['date'];
+            $option = $_POST['option'];
 
-            var_dump($postedYear);
-
-            // ここで取得したデータを使って必要な処理を行う
-            // 例えば、データベースから新しいカレンダー情報を取得するなど
-            // ...
+            // dateの設定
+            $timestamp = ($option == 'next') ? strtotime($today.'+1 month') : strtotime($today.'-1 month');
+            $date = date("Y-m-d", $timestamp);
 
             // 取得したデータをビューに渡す
             $viewData = [
                 'users' => [], // 仮に空のユーザーリストを渡す例
+                'date' => $date,
             ];
             $testForm = $this->testView->generateCalenderTestView($viewData);
 
@@ -129,11 +131,13 @@ class HomeController extends Controller
             // フォームがまだ送信されていない場合は通常の表示を行う
             $query = "SELECT id, username, email FROM users";
             $users = $this->userModel->dbConnector->fetchAll($query);
+
             usort($users, function ($a, $b) {
                 return $a['id'] - $b['id'];
             });
             $viewData = [
                 'users' => $users,
+                'date' => $date,
             ];
             $testForm = $this->testView->generateCalenderTestView($viewData);
 
@@ -144,8 +148,8 @@ class HomeController extends Controller
     public function calendarTestResult()
     {
         // フォームが送信された場合の処理
-        if ($_SERVER["REQUEST_METHOD"] == "GET") {
-            var_dump($_GET);
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            var_dump($_POST);
         }
     }
 
