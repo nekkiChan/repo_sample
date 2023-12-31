@@ -92,20 +92,24 @@ class TestView extends View
 
         <script>
             function toggleValue(element) {
+                // hidden inputを取得
+                var hiddenInput = element.nextElementSibling;
+
                 // 現在のvalueを取得
-                var currentValue = element.getAttribute('value');
+                var currentValue = hiddenInput.value;
 
                 // valueを反転させる
                 var newValue = (currentValue === 'true') ? 'false' : 'true';
+
+                // hidden inputのvalueを更新
+                hiddenInput.value = newValue;
+
                 // デバッグ用に背景色を変更
                 if (newValue === 'false') {
                     element.style.backgroundColor = 'blue'; // falseの場合、背景色を青に設定
                 } else {
                     element.style.backgroundColor = 'red'; // trueの場合、背景色を赤に設定
                 }
-
-                // 新しいvalueを設定
-                element.setAttribute('value', newValue);
 
                 // クリックされたことを確認するためにコンソールにログを出力（不要であれば削除しても構いません）
                 console.log('New value:', newValue);
@@ -114,7 +118,7 @@ class TestView extends View
 
         <h1>テスト画面</h1>
         <!-- ボタンを押すとホーム画面へ -->
-        <form method="post" action="<?php echo $this->router->generateUrl('test/ImgBtn/result'); ?>">
+        <form method="post" action="<?php echo $this->router->generateUrl('test/imgbtnResult'); ?>">
 
             <!-- 他のフォーム要素も同様に設定 -->
             <table>
@@ -147,7 +151,7 @@ class TestView extends View
                         <td>
                             <img src="<?= HOME_URL . IMG_Path ?>trash.png" alt="テスト用画像" name="trash[]" value="false"
                                 onclick="toggleValue(this)">
-
+                            <input type="hidden" name="trash[]" value="false">
                         </td>
                         <?php
                         echo '</tr>';

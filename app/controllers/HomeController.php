@@ -94,7 +94,10 @@ class HomeController extends Controller
 
     public function imgBtnTestResult()
     {
-
+        // フォームが送信された場合の処理
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            var_dump($_POST);
+        }
     }
 
 }
