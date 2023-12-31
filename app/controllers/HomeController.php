@@ -85,14 +85,37 @@ class HomeController extends Controller
     public function imgBtnTest()
     {
         $query = "SELECT id, username, email FROM users";
+        $users = $this->userModel->dbConnector->fetchAll($query);
+        usort($users, function ($a, $b) {
+            return $a['id'] - $b['id'];
+        });
         $viewData = [
-            'users' => $this->userModel->dbConnector->fetchAll($query),
+            'users' => $users,
         ];
         $testForm = $this->testView->generateImgBtnTestView($viewData);
         echo $testForm;
     }
 
     public function imgBtnTestResult()
+    {
+        // フォームが送信された場合の処理
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            var_dump($_POST);
+        }
+    }
+
+    public function calendarTest()
+    {
+        $query = "SELECT id, username, email FROM users";
+        $viewData = [
+            'users' => $this->userModel->dbConnector->fetchAll($query),
+        ];
+        $testForm = $this->testView->generateCalenderTestView($viewData);
+        
+        // echo $testForm;
+    }
+
+    public function calendarResult()
     {
         // フォームが送信された場合の処理
         if ($_SERVER["REQUEST_METHOD"] == "POST") {

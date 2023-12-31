@@ -33,6 +33,9 @@ $router->addRoute('test/array', 'HomeController', 'arrayTest');
 // 画像ボタン
 $router->addRoute('test/imgbtn', 'HomeController', 'imgBtnTest');
 $router->addRoute('test/imgbtnResult', 'HomeController', 'imgBtnTestResult');
+// カレンダーcalendar
+$router->addRoute('test/calendar', 'HomeController', 'calendarTest');
+$router->addRoute('test/calendarResult', 'HomeController', 'calendarTestResult');
 
 $route = isset($_GET['url']) ? $_GET['url'] : '';
 $router->dispatch($route);

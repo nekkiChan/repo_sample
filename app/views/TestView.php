@@ -56,7 +56,6 @@ class TestView extends View
 
         // バッファリングを開始
         ob_start();
-
         ?>
 
         <style>
@@ -160,6 +159,29 @@ class TestView extends View
                 </tbody>
             </table>
 
+            <input type="submit" value="Submit">
+        </form>
+
+        <?php
+        echo $this->renderFooter();
+
+        $html = ob_get_clean();  // バッファの内容を取得してバッファリングを終了
+
+        return $html;
+    }
+
+    public function generateCalenderTestView($viewData)
+    {
+        session_start();
+        echo $this->renderHeader();
+
+        // バッファリングを開始
+        ob_start();
+
+        ?>
+        <h1>テスト画面</h1>
+        <!-- ボタンを押すとホーム画面へ -->
+        <form method="post" action="<?php echo $this->router->generateUrl('test/calendarResult'); ?>">
             <input type="submit" value="Submit">
         </form>
 
