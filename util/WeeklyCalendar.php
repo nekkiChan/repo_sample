@@ -29,7 +29,6 @@ class WeeklyCalendar
         echo '<th>Fri</th>';
         echo '<th>Sat</th>';
         echo '</tr>';
-        echo '</table>';
 
     }
 
@@ -46,7 +45,7 @@ class WeeklyCalendar
         ];
 
         $count = array_search($startWeek, $dayOfWeekMap);
-        for($i=0; $i<$count; $i++){
+        for ($i = 0; $i < $count; $i++) {
             $shiftDay = array_shift($dayOfWeekMap);
             array_push($dayOfWeekMap, $shiftDay);
         }
@@ -64,18 +63,24 @@ class WeeklyCalendar
         $startDate = $baseDate;
         // 週間カレンダーを生成
         foreach ($this->getDayCountOfWeek($startWeek) as $weekCount => $weekName) {
-            if($weekName == $baseDate->format('D')){
+            if ($weekName == $baseDate->format('D')) {
                 // 週の初めを表示したい
                 $startDate->modify("-$weekCount day");
             }
         }
 
+        $tableBody = '<tr>';
         for ($i = 0; $i < 7; $i++) {
             // 現在の日付と曜日を表示
-            echo $startDate->format('Y-m-d') . ' (' . $this->getDayCountOfWeek($startWeek)[$i] . ')<br>';
+            // echo $startDate->format('Y-m-d') . ' (' . $this->getDayCountOfWeek($startWeek)[$i] . ')<br>';
+            // echo $startDate->format('Y-m-d').'<br>';
+            $tableBody .= '<td>' . $startDate->format('m / d') . '</td>';
             // 次の日に移動
             $startDate->modify('+1 day');
         }
+        $tableBody .= '</tr></table>';
+
+        echo $tableBody;
     }
 
 }
