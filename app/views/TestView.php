@@ -178,6 +178,8 @@ class TestView extends View
         // バッファリングを開始
         ob_start();
 
+        var_dump($viewData);
+
         ?>
 
         <style>
@@ -227,15 +229,10 @@ class TestView extends View
         <!-- ボタンを押すとホーム画面へ -->
         <form method="post" action="<?= $this->router->generateUrl('test/calendar'); ?>">
             <div class="calendar">
-                <input type="hidden" name="date" value="<?= $viewData['date'] ?>">
-                <button name="option" value="previous">
-                    前月へ
-                </button>
-                <button name="option" value="next">
-                    次月へ
-                </button>
                 <?php
-                $this->calendar->generateCalendar($viewData['date']);
+                // $this->calendar->generateCalendar($viewData['date'], 'weekly');
+                $this->weeklyCalendar->generateCalendar(new \DateTime('2024-01-01'));
+                // $this->weeklyCalendar->generateCalendar();
                 ?>
             </div>
             <input type="submit" value="Submit">

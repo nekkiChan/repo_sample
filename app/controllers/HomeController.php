@@ -112,16 +112,18 @@ class HomeController extends Controller
         // フォームが送信されたかどうかを確認
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // POSTデータを取得
-            $today = $_POST['date'];
             $option = $_POST['option'];
 
             // dateの設定
-            $timestamp = ($option == 'next') ? strtotime($today.'+1 month') : strtotime($today.'-1 month');
+            if ($_POST['calendarType'] == 'monthly') {
+                $timestamp = ($option == 'next') ? strtotime($_POST['date'] . '+1 month') : strtotime($_POST['date'] . '-1 month');
+            } else if ($_POST['calendarType'] == 'weekly') {
+                $timestamp = ($option == 'next') ? strtotime($_POST['date'] . '+1 week') : strtotime($_POST['date'] . '-1 week');
+            }
             $date = date("Y-m-d", $timestamp);
 
             // 取得したデータをビューに渡す
             $viewData = [
-                'users' => [], // 仮に空のユーザーリストを渡す例
                 'date' => $date,
             ];
             $testForm = $this->testView->generateCalenderTestView($viewData);

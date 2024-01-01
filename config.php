@@ -19,7 +19,7 @@ define('Controller_Path', 'controllers\\');
 // viewsディレクトリ設定
 define('VIEW_Path', APP_Path.'views\\');
 // CSSディレクトリ設定
-define('CSS_Path', VIEW_Path.'css\\style.css');
+define('CSS_Path', VIEW_Path.'css\\');
 // IMGディレクトリ設定
 define('IMG_Path', VIEW_Path.'img\\asset\\');
 

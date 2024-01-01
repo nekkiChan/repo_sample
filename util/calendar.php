@@ -9,6 +9,7 @@ class Calendar
     private $daysInMonth;
     private $firstDay;
     private $firstDayOfWeek;
+    private $currentDay;
     private $route;
 
     public function __construct()
@@ -39,13 +40,17 @@ class Calendar
         $this->daysInMonth = cal_days_in_month(CAL_GREGORIAN, $this->currentMonth, $this->currentYear);
         $this->firstDay = mktime(0, 0, 0, $this->currentMonth, 1, $this->currentYear);
         $this->firstDayOfWeek = date('w', $this->firstDay);
+        $this->currentDay = date('j');
     }
 
-    public function generateCalendar($selectedDate = null)
+    private function generateHeaderCalendar($selectedDate, $type)
     {
-        $this->initialize($selectedDate);
+        echo '<input type="hidden" name="date" value="' . $selectedDate . '">';
+        echo '<button name="option" value="previous">前月へ</button>';
+        echo '<button name="option" value="next">次月へ</button>';
+        echo "<input type='hidden' name='calendarType' value=$type>";
 
-        echo '<h2>' . date('F Y', $this->firstDay) . '</h2>';
+        // echo '<h2>' . date('F Y', $this->firstDay) . '</h2>';
         echo '<table>';
         echo '<tr>';
         echo '<th>Sun</th>';
@@ -57,25 +62,58 @@ class Calendar
         echo '<th>Sat</th>';
         echo '</tr>';
 
-        $dayCounter = 0;
+    }
 
-        for ($i = 0; $i < 6; $i++) {
-            echo '<tr>';
-            for ($j = 0; $j < 7; $j++) {
-                $this->generateTableCell($dayCounter);
-                $dayCounter++;
-            }
-            echo '</tr>';
+    public function generateCalendar($selectedDate = null, $type = 'monthly')
+    {
+        $this->initialize($selectedDate);
+        $this->generateHeaderCalendar($selectedDate, $type);
+
+        if ($type === 'monthly') {
+            $this->generateMonthlyCalendar();
+        } elseif ($type === 'weekly') {
+            $this->generateWeeklyCalendar();
         }
 
         echo '</table>';
     }
 
-    private function generateTableCell($dayCounter)
+    private function generateMonthlyCalendar()
     {
-        if (($dayCounter >= $this->firstDayOfWeek) && ($dayCounter - $this->firstDayOfWeek < $this->daysInMonth)) {
-            $day = $dayCounter - $this->firstDayOfWeek + 1;
-            $dateString = "$this->currentYear-$this->currentMonth-$day"; // YYYY-MM-DD 形式の文字列
+        $dayCounter = 0;
+
+        for ($i = 0; $i < 6; $i++) {
+            echo '<tr>';
+            for ($j = 0; $j < 7; $j++) {
+                $this->generateTableCell($dayCounter, 'monthly');
+                $dayCounter++;
+            }
+            echo '</tr>';
+        }
+    }
+
+    private function generateWeeklyCalendar()
+    {
+        // 週間カレンダーの生成ロジックを追加
+        echo '<tr>';
+        for ($j = 0; $j < 7; $j++) {
+            $this->generateTableCell($j, 'weekly');
+        }
+        echo '</tr>';
+    }
+
+    private function generateTableCell($index, $viewType)
+    {
+        // $dayCounterではなく、$indexを使用
+        if ($viewType === 'monthly') {
+            $dayCounter = $index + 1 - $this->firstDayOfWeek;
+        } elseif ($viewType === 'weekly') {
+            $dayCounter = $this->currentDay + $index - date('w', $this->firstDay);
+        }
+
+        if (($dayCounter >= 1) && ($dayCounter <= $this->daysInMonth)) {
+            $day = $dayCounter;
+            $dateString = "$this->currentYear-$this->currentMonth-$day";
             echo '<td><a href="' . $this->route->generateUrl('test/calendarResult') . '?date=' . $dateString . '">' . $day . '</a></td>';
         } else {
             echo '<td></td>';

@@ -3,16 +3,20 @@ namespace app\views;
 
 use util\Router;
 use util\Calendar;
+use util\WeeklyCalendar;
+
 
 class View
 {
     protected $router;
     protected $calendar;
+    protected $weeklyCalendar;
 
     public function __construct()
     {
         $this->router = new Router();
         $this->calendar = new Calendar();
+        $this->weeklyCalendar = new WeeklyCalendar();
     }
 
     public function renderHeader()
@@ -24,7 +28,7 @@ class View
 
         <head>
             <title>Login</title>
-            <link rel="stylesheet" type="text/css" href="<?= CSS_Path ?>style.css">
+            <link rel="stylesheet" type="text/css" href="<?= HOME_URL . CSS_Path ?>style.css">
         </head>
 
         <body>
