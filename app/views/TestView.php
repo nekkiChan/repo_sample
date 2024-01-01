@@ -10,30 +10,45 @@ class TestView extends View
         session_start();
         echo $this->renderHeader();
 
+        // ページ番号の設定
+        $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+        // 1ページに表示するアイテム数の設定
+        $itemsPerPage = 3;
+        // ページ数ごとのアイテムの設定
+        $items = array_chunk($viewData['users'], $itemsPerPage);
         // バッファリングを開始
         ob_start();
-
         ?>
-        <h1>テスト画面</h1>
-        <!-- ボタンを押すとホーム画面へ -->
-        <form method="post" action="<?php echo $this->router->generateUrl('test/upload/result'); ?>">
+        <h1>アップロードテスト画面</h1>
+
+        <form method="post" action="<?php echo $this->router->generateUrl('/test/upload'); ?>">
+            <div>
+                <input type="text" name="page" value="">
+
+                <?php if ($page > 0): ?>
+                    <a href="<?php echo $this->router->generateUrl('test/upload', ['page' => $page - 1]); ?>">前へ</a>
+                <?php endif; ?>
+
+                <?php if ($page < count($items)): ?>
+                    <a href="<?php echo $this->router->generateUrl('test/upload', ['page' => $page + 1]); ?>">次へ</a>
+                <?php endif; ?>
+            </div>
+
             <?php
-            foreach ($viewData['users'] as $value) {
+            foreach ($items[$page-1] as $value) {
                 foreach ($value as $k => $val) {
-                    $data = $value[$k];
+                    $data = $val;
                     if ($k === 'id') { ?>
                         <input type="hidden" name="<?= $k ?>[]" value="<?= $data ?>">
                     <?php } else { ?>
                         <label for="<?= $k ?>[]">
                             <?= $k ?>
                         </label>
-                        <input type="text" id="<?= $k ?>[]" name="<?= $k ?>[]" value=<?= $data ?>>
+                        <input type="text" id="<?= $k ?>[]" name="<?= $k ?>[]" value="<?= $data ?>">
                         <?php
                     }
                 }
                 echo "<br>";
-                ?>
-                <?php
             }
             ?>
 

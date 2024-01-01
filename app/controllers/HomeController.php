@@ -50,11 +50,36 @@ class HomeController extends Controller
 
     public function uploadTest()
     {
+
         $query = "SELECT id, username, email FROM users";
+        $users = $this->userModel->dbConnector->fetchAll($query);
+        usort($users, function ($a, $b) {
+            return $a['id'] - $b['id'];
+        });
+        
+        // フォームが送信された場合の処理
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+            $keys = array_keys($_POST);
+
+            $data = array_map(function (...$values) use ($keys) {
+                return array_combine($keys, $values);
+            }, ...array_values($_POST));
+
+            foreach ($data as $key => $value) {
+                // 変更されているか確認
+                if ($this->userModel->compareUserDataWithDB($data[$key])) {
+                    // アップデート
+                    $this->userModel->updateUserData($data[$key]);
+                } else {
+                    // echo $data[$key]['username'] . 'のデータに変更はありません<br>';
+                }
+            }
+        }
+
         $viewData = [
-            'users' => $this->userModel->dbConnector->fetchAll($query),
+            'users' => $users,
         ];
-        // var_dump($viewData);
         $testForm = $this->testView->generateTestView($viewData);
         echo $testForm;
     }
@@ -71,14 +96,21 @@ class HomeController extends Controller
             }, ...array_values($_POST));
 
             foreach ($data as $key => $value) {
-                // 変更されているか確認
-                if ($this->userModel->compareUserDataWithDB($data[$key])) {
+                // 変
+                if ($this->userModel->compareUserData更されているか確認WithDB($data[$key])) {
                     // アップデート
                     $this->userModel->updateUserData($data[$key]);
                 } else {
                     echo $data[$key]['username'] . 'のデータに変更はありません<br>';
                 }
             }
+        } else if ($_SERVER["REQUEST_METHOD"] == "GET") {
+            $query = "SELECT id, username, email FROM users";
+            $users = $this->userModel->dbConnector->fetchAll($query);
+            usort($users, function ($a, $b) {
+                return $a['id'] - $b['id'];
+            });
+            var_dump($users[$_GET['page']]);
         }
     }
 
