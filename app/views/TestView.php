@@ -178,8 +178,6 @@ class TestView extends View
         // バッファリングを開始
         ob_start();
 
-        var_dump($viewData);
-
         ?>
 
         <style>
@@ -231,7 +229,7 @@ class TestView extends View
             <div class="calendar">
                 <?php
                 // $this->calendar->generateCalendar($viewData['date'], 'weekly');
-                $this->weeklyCalendar->generateCalendar(new \DateTime('2024-01-01'));
+                $this->weeklyCalendar->generateCalendar(new \DateTime($viewData['date']));
                 // $this->weeklyCalendar->generateCalendar();
                 ?>
             </div>

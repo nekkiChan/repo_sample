@@ -118,6 +118,7 @@ class HomeController extends Controller
             if ($_POST['calendarType'] == 'monthly') {
                 $timestamp = ($option == 'next') ? strtotime($_POST['date'] . '+1 month') : strtotime($_POST['date'] . '-1 month');
             } else if ($_POST['calendarType'] == 'weekly') {
+                // var_dump($_POST);
                 $timestamp = ($option == 'next') ? strtotime($_POST['date'] . '+1 week') : strtotime($_POST['date'] . '-1 week');
             }
             $date = date("Y-m-d", $timestamp);
