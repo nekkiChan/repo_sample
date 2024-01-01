@@ -4,11 +4,17 @@ namespace util;
 class WeeklyCalendar
 {
     private $startDate;
+    private $startWeek;
+    private $tableBody;
 
     public function __construct()
     {
         // 今日の日付を取得
         $this->startDate = new \DateTime();
+        // はじめに表示する曜日
+        $this->startWeek = 'Sun';
+        // 表のbody部分
+        $this->tableBody = '';
     }
 
     private function generateHeaderCalendar($selectedDate, $type)
@@ -20,6 +26,7 @@ class WeeklyCalendar
 
         // echo '<h2>' . date('F Y', $this->firstDay) . '</h2>';
         echo '<table>';
+        echo '<thead>';
         echo '<tr>';
         echo '<th>Sun</th>';
         echo '<th>Mon</th>';
@@ -29,6 +36,7 @@ class WeeklyCalendar
         echo '<th>Fri</th>';
         echo '<th>Sat</th>';
         echo '</tr>';
+        echo '</thead>';
 
     }
 
@@ -50,39 +58,69 @@ class WeeklyCalendar
             array_push($dayOfWeekMap, $shiftDay);
         }
 
-        // print_r($dayOfWeekMap);
-
         return $dayOfWeekMap;
     }
 
-    public function generateCalendar(\DateTime $customStartDate = null, $startWeek = 'Sun')
+    public function generateCalendar(\DateTime $customStartDate = null, $customStartWeek = 'Sun', $calendarType = 'weekly')
     {
-        $baseDate = $customStartDate ?? clone $this->startDate;
-        $this->generateHeaderCalendar($baseDate->format('Y-m-d'), 'weekly');
+        $this->startDate = $customStartDate !== null ? $customStartDate : clone $this->startDate;
+        $this->startWeek = $customStartWeek !== null ? $customStartWeek : $this->startWeek;
+        $this->generateHeaderCalendar($this->startDate->format('Y-m-d'), $calendarType);
 
-        $startDate = $baseDate;
-        // 週間カレンダーを生成
-        foreach ($this->getDayCountOfWeek($startWeek) as $weekCount => $weekName) {
-            if ($weekName == $baseDate->format('D')) {
-                // 週の初めを表示したい
-                $startDate->modify("-$weekCount day");
-            }
+        $this->tableBody = '<tr>';
+        if ($calendarType == 'weekly') {
+            // 週間カレンダーを生成
+            $this->generateWeekCalendar();
+        } else {
+            $this->generateMonthCalendar();
         }
+        $this->tableBody .= '</tr></table>';
 
-        $tableBody = '<tr>';
-        for ($i = 0; $i < 7; $i++) {
-            // 現在の日付と曜日を表示
-            // echo $startDate->format('Y-m-d') . ' (' . $this->getDayCountOfWeek($startWeek)[$i] . ')<br>';
-            // echo $startDate->format('Y-m-d').'<br>';
-            $tableBody .= '<td>' . $startDate->format('m / d') . '</td>';
-            // 次の日に移動
-            $startDate->modify('+1 day');
-        }
-        $tableBody .= '</tr></table>';
-
-        echo $tableBody;
+        // テーブルbody部分を表示
+        echo $this->tableBody;
     }
 
+    private function generateWeekCalendar()
+    {
+        // 週間カレンダーを生成
+        foreach ($this->getDayCountOfWeek($this->startWeek) as $weekCount => $weekName) {
+            if ($weekName == $this->startDate->format('D')) {
+                // 週の初めを表示したい
+                $this->startDate->modify("-$weekCount day");
+            }
+        }
+        for ($i = 0; $i < 7; $i++) {
+            // 現在の日付と曜日を表示
+            $this->tableBody .= '<td>' . $this->startDate->format('m / d') . '</td>';
+            // 次の日に移動
+            $this->startDate->modify('+1 day');
+        }
+    }
+
+    private function generateMonthCalendar()
+    {
+        $SDay = (clone $this->startDate)->modify('first day of this month');
+        $monthName = $SDay->format('m');
+        var_dump($SDay->format('m'));
+
+        for ($i = 0; $i < 6; $i++) {
+            echo '<tr>';
+            for ($j = 0; $j < 7; $j++) {
+                echo '<td>';
+                if ($i != 0 || $j >= $SDay->format('w')) {
+                    if ($monthName == $SDay->format('m')) {
+                        echo $SDay->format('d');
+                        $SDay->modify('+1 day');
+                    }
+                }
+                echo '</td>';
+            }
+            echo '</tr>';
+            if ($monthName != $SDay->format('m')) {
+                break;
+            }
+        }
+    }
 }
 
 ?>

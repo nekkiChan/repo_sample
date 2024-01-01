@@ -228,9 +228,8 @@ class TestView extends View
         <form method="post" action="<?= $this->router->generateUrl('test/calendar'); ?>">
             <div class="calendar">
                 <?php
-                // $this->calendar->generateCalendar($viewData['date'], 'weekly');
-                $this->weeklyCalendar->generateCalendar(new \DateTime($viewData['date']));
-                // $this->weeklyCalendar->generateCalendar();
+                var_dump($viewData['date']);
+                $this->weeklyCalendar->generateCalendar(new \DateTime($viewData['date']), null, 'monthly');
                 ?>
             </div>
             <input type="submit" value="Submit">
