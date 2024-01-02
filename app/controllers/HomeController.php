@@ -51,12 +51,6 @@ class HomeController extends Controller
     public function uploadTest()
     {
 
-        $query = "SELECT id, username, email FROM users";
-        $users = $this->userModel->dbConnector->fetchAll($query);
-        usort($users, function ($a, $b) {
-            return $a['id'] - $b['id'];
-        });
-        
         // フォームが送信された場合の処理
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -72,13 +66,25 @@ class HomeController extends Controller
                     // アップデート
                     $this->userModel->updateUserData($data[$key]);
                 } else {
-                    // echo $data[$key]['username'] . 'のデータに変更はありません<br>';
+                    echo $data[$key]['username'] . 'のデータに変更はありません<br>';
                 }
             }
         }
 
+        $query = "SELECT id, username, email FROM users";
+        $users = $this->userModel->dbConnector->fetchAll($query);
+        usort($users, function ($a, $b) {
+            return $a['id'] - $b['id'];
+        });
+
+        // 1ページに表示するアイテム数の設定
+        $itemsPerPage = 3;
+        // ページ数ごとのアイテムの設定
+        $items = array_chunk($users, $itemsPerPage);
+
         $viewData = [
             'users' => $users,
+            'items' => $items,
         ];
         $testForm = $this->testView->generateTestView($viewData);
         echo $testForm;
