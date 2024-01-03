@@ -16,9 +16,7 @@ class Controller {
     }
 
     public function index() {
-        $this->basicText = 'This is Basic';  // プロパティに値を設定
-        $userName = 'Jone';
-        include(__DIR__ . '/../views/home.php');
+        session_start();
     }
 
     public function getText() {

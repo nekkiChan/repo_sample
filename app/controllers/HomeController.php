@@ -50,6 +50,13 @@ class HomeController extends Controller
 
     public function uploadTest()
     {
+        // URLから 'page' パラメータを取得
+        $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+
+        parent::index();
+        if (isset($_SESSION['message'])) {
+            unset($_SESSION['message']);
+        }
 
         // フォームが送信された場合の処理
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -66,7 +73,7 @@ class HomeController extends Controller
                     // アップデート
                     $this->userModel->updateUserData($data[$key]);
                 } else {
-                    echo $data[$key]['username'] . 'のデータに変更はありません<br>';
+                    $_SESSION['message'][] = $data[$key]['username'] . 'のデータに変更はありません<br>';
                 }
             }
         }
@@ -80,11 +87,12 @@ class HomeController extends Controller
         // 1ページに表示するアイテム数の設定
         $itemsPerPage = 3;
         // ページ数ごとのアイテムの設定
-        $items = array_chunk($users, $itemsPerPage);
+        $items = array_chunk($users, $itemsPerPage)[$page - 1];
 
         $viewData = [
             'users' => $users,
             'items' => $items,
+            'page' => $page,
         ];
         $testForm = $this->testView->generateTestView($viewData);
         echo $testForm;

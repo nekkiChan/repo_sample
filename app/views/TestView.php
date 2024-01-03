@@ -7,31 +7,36 @@ class TestView extends View
 {
     public function generateTestView($viewData)
     {
-        session_start();
         echo $this->renderHeader();
 
-        // ページ番号の設定
-        $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
         // バッファリングを開始
         ob_start();
+
+        var_dump($this->router->generateUrl('test/upload', ['page' => $viewData['page']]));
+        echo '<br><br>';
+        if(isset($_SESSION['message'])){
+            foreach ($_SESSION['message'] as $value) {
+                echo $value;
+            }
+        }
         ?>
         <h1>アップロードテスト画面</h1>
 
         <div>
             <input type="text" name="page" value="">
 
-            <?php if ($page > 0): ?>
-                <a href="<?php echo $this->router->generateUrl('test/upload', ['page' => $page - 1]); ?>">前へ</a>
+            <?php if ($viewData['page'] > 0): ?>
+                <a href="<?php echo $this->router->generateUrl('test/upload', ['page' => $viewData['page'] - 1]); ?>">前へ</a>
             <?php endif; ?>
 
-            <?php if ($page < count($viewData['items'])): ?>
-                <a href="<?php echo $this->router->generateUrl('test/upload', ['page' => $page + 1]); ?>">次へ</a>
+            <?php if ($viewData['page'] < count($viewData['items'])): ?>
+                <a href="<?php echo $this->router->generateUrl('test/upload', ['page' => $viewData['page'] + 1]); ?>">次へ</a>
             <?php endif; ?>
         </div>
 
-        <form method="post" action="<?php echo $this->router->generateUrl('test/upload'); ?>">
+        <form method="post" action="<?php echo $this->router->generateUrl('test/upload', ['page' => $viewData['page']]); ?>">
             <?php
-            foreach ($viewData['items'][$page - 1] as $value) {
+            foreach ($viewData['items'] as $value) {
                 foreach ($value as $k => $val) {
                     $data = $val;
                     if ($k === 'id') { ?>
