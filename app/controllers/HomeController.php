@@ -3,7 +3,7 @@ namespace app\controllers;
 
 use app\controllers\Controller;
 use app\views\HomeView;
-use app\views\TestView;
+use app\views\test\TestView;
 
 class HomeController extends Controller
 {
