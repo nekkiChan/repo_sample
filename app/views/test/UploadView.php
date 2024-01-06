@@ -20,24 +20,82 @@ class UploadView extends View
                 echo $value;
             }
         }
+
+        foreach ($data['contents'] as $contentName => $contents) {
+            echo $this->goPage($contentName, $data['contents']);
+            echo $this->generateTable($contents);
+        }
+
         ?>
-        <h1>アップロードテスト画面</h1>
+
+        <?php
+
+        return ob_get_clean();  // バッファの内容を取得してバッファリングを終了
+    }
+
+    protected function goPage($contentName, $data)
+    {
+        // print_r($contentName . 'テーブルの' . $data[$contentName]['page'] . 'ページ目');
+        // バッファリングを開始
+        ob_start();
+
+        $getData = array();
+        foreach ($data as $key => $value) {
+            $getData[$key] = $value['page'];
+        }
+
+        ?>
 
         <div class="page">
             <input type="text" name="page" value="">
 
-            <?php if ($data['page'] > 1): ?>
-                <a href="<?php echo $this->router->generateUrl('test/upload', ['page' => $data['page'] - 1]); ?>">前へ</a>
+            <?php if ($data[$contentName]['page'] > 1): ?>
+                <div>
+                    <a href="<?php
+                    $getData[$contentName] = $getData[$contentName] - 1;
+                    echo $this->router->generateUrl(
+                        'test/upload',
+                        $getData
+                    );
+                    $getData[$contentName] = $getData[$contentName] + 1;
+                    ?>">
+                        前へ
+                    </a>
+                </div>
             <?php endif; ?>
 
-            <?php if ($data['page'] < count($data['items'])) : ?>
-                <a href="<?php echo $this->router->generateUrl('test/upload', ['page' => $data['page'] + 1]); ?>">次へ</a>
+            <?php if ($data[$contentName]['page'] < count($data[$contentName]['items'])): ?>
+                <div>
+                    <a href="<?php
+                    $getData[$contentName] = $getData[$contentName] + 1;
+                    echo $this->router->generateUrl(
+                        'test/upload',
+                        $getData
+                    );
+                    $getData[$contentName] = $getData[$contentName] - 1;
+                    ?>">次へ</a>
+                </div>
             <?php endif; ?>
         </div>
 
+        <?php
+
+        return ob_get_clean();  // バッファの内容を取得してバッファリングを終了
+    }
+
+    protected function generateTable($data)
+    {
+        // バッファリングを開始
+        ob_start();
+        ?>
+
+        <h2>
+            <?= $data['title'] ?>
+        </h2>
+
         <form method="post" action="<?php echo $this->router->generateUrl('test/upload', ['page' => $data['page']]); ?>">
             <?php
-            foreach ($data['items'][$data['page']-1] as $value) {
+            foreach ($data['items'][$data['page'] - 1] as $value) {
                 foreach ($value as $k => $val) {
                     $data = $val;
                     if ($k === 'id') { ?>
@@ -59,7 +117,6 @@ class UploadView extends View
         </form>
 
         <?php
-
         return ob_get_clean();  // バッファの内容を取得してバッファリングを終了
     }
 }

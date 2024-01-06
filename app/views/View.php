@@ -38,12 +38,17 @@ class View
         <html>
 
         <head>
-            <title><?= $data['title'] ?></title>
+            <title>
+                <?= $data['title'] ?>
+            </title>
             <link rel="stylesheet" type="text/css" href="<?= HOME_URL . CSS_Path ?>style.css">
         </head>
 
         <body>
             <div class="content">
+                <h1>
+                    <?= $data['title'] ?>
+                </h1>
                 <?php
                 return ob_get_clean();
     }

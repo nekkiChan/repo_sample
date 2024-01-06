@@ -73,7 +73,7 @@ class ImgBtnView extends View
             }
         </script>
 
-        <h1><?= $data['title'] ?></h1>
+        <h2><?= $data['title'] ?></h2>
         <!-- ボタンを押すとホーム画面へ -->
         <form method="post" action="<?php echo $this->router->generateUrl('test/imgbtn'); ?>">
 
