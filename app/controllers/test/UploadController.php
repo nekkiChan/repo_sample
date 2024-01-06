@@ -13,7 +13,9 @@ class UploadController extends Controller
     }
 
     public function index()
-    {        
+    {
+        parent::index();
+
         // URLから 'page' パラメータを取得
         $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 
@@ -33,17 +35,22 @@ class UploadController extends Controller
 
             foreach ($data as $key => $value) {
                 // 変更されているか確認
-                if ($this->userModel->compareUserDataWithDB($data[$key])) {
+                if ($this->usersModel->compareDataWithDB($data[$key])) {
                     // アップデート
-                    $this->userModel->updateUserData($data[$key]);
+                    $this->usersModel->updateData($data[$key]);
                 } else {
                     $_SESSION['message'][] = $data[$key]['username'] . 'のデータに変更はありません<br>';
                 }
             }
         }
 
-        $query = "SELECT id, username, email FROM users";
-        $users = $this->userModel->dbConnector->fetchAll($query);
+        // USERSテーブル
+        $query = 'SELECT id, username, email FROM ' . $this->usersModel->getTableName();
+        $users = $this->usersModel->dbConnector->fetchAll($query);
+        // ITEMSテーブル
+        // $query = 'SELECT id, name FROM ' . $this->itemsModel->getTableName();
+        // $users = $this->itemsModel->dbConnector->fetchAll($query);
+        
         usort($users, function ($a, $b) {
             return $a['id'] - $b['id'];
         });
@@ -51,14 +58,14 @@ class UploadController extends Controller
         // 1ページに表示するアイテム数の設定
         $itemsPerPage = 3;
         // ページ数ごとのアイテムの設定
-        $items = array_chunk($users, $itemsPerPage)[$page - 1];
+        $items = array_chunk($users, $itemsPerPage);
 
         $data = [
             'title' => "表テスト画面",
-            'users' => $users,
             'items' => $items,
             'page' => $page,
         ];
-        return $this->view->getHTML($data);
+
+        parent::view($data);
     }
 }

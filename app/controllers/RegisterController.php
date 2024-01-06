@@ -14,7 +14,6 @@ class RegisterController extends Controller
     {
         parent::__construct();
         // 引数が提供されなかった場合は、デフォルトのインスタンスを作成
-        $this->userModel = $userModel ?? new UserModel();
         $this->registerView = $registerView ?? new RegisterView();
     }
 
@@ -34,7 +33,7 @@ class RegisterController extends Controller
             }
 
             // ユーザーデータをデータベースに登録
-            $this->userModel->insertUserData($data);
+            $this->userModel->insertData($data);
 
             // 登録後の処理（例: 成功メッセージを表示するなど）
             echo "User registered successfully!";

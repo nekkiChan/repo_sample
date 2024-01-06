@@ -1,12 +1,10 @@
 <?php
-namespace app\models;
+namespace app\models\database;
 
 use \PDO;
 use \PDOException;
 
 use app\models\LogModel;
-
-;
 
 class DatabaseConnector
 {
@@ -16,8 +14,6 @@ class DatabaseConnector
     private $user;
     private $password;
     private $connection;
-    protected $tableName;
-
     private $logModel;
 
     public function __construct()
@@ -27,7 +23,6 @@ class DatabaseConnector
         $this->user = DB_USER;
         $this->password = DB_PASSWORD;
         $this->logModel = new LogModel();
-        $this->tableName = 'users';
     }
 
     /**
@@ -97,7 +92,7 @@ class DatabaseConnector
             $this->logModel->logMessage("Error executing query: " . $e->getMessage());
         }
     }
-    
+
 
     /**
      * クエリ結果からすべての行を取得するメソッド
@@ -148,7 +143,8 @@ class DatabaseConnector
      */
     private function dataExists($data, $conditions)
     {
-        $existingData = $this->fetchSingleResult("SELECT * FROM {$this->tableName} WHERE " . implode(" AND ", array_map(function ($column) {
+        $databaseModel =  new DatabaseModel();
+        $existingData = $this->fetchSingleResult("SELECT * FROM " . $databaseModel->getTableName() . " WHERE " . implode(" AND ", array_map(function ($column) {
             return "$column = ?";
         }, array_keys($conditions))), array_values($conditions));
 

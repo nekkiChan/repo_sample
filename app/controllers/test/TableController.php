@@ -14,9 +14,10 @@ class TableController extends Controller
 
     public function index()
     {
+        parent::index();
         $data = [
             'title' => "表テスト画面",
         ];
-        echo $this->view->getHTML($data);
+        parent::view($data);
     }
 }

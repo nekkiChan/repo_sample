@@ -9,7 +9,6 @@ class HomeView extends View
     {
         session_start();
         var_dump($_SESSION);
-        echo $this->renderHeader();
 
         // バッファリングを開始
         ob_start();
@@ -22,7 +21,6 @@ class HomeView extends View
         </form>
 
         <?php
-        echo $this->renderFooter();
 
         $html = ob_get_clean();  // バッファの内容を取得してバッファリングを終了
 

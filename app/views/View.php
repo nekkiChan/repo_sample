@@ -9,13 +9,11 @@ use util\WeeklyCalendar;
 class View
 {
     protected $router;
-    protected $calendar;
     protected $weeklyCalendar;
 
     public function __construct()
     {
         $this->router = new Router();
-        $this->calendar = new Calendar();
         $this->weeklyCalendar = new WeeklyCalendar();
     }
 

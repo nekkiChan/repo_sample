@@ -14,6 +14,8 @@ class CalendarController extends Controller
 
     public function index()
     {
+        parent::index();
+
         $timestamp = strtotime(date('Y-m-d'));
         $date = date("Y-m-d", $timestamp);
 
@@ -39,11 +41,11 @@ class CalendarController extends Controller
 
         // 取得したデータをビューに渡す
         $data = [
-            'title' => "画像ボタンテスト画面",
+            'title' => "カレンダーテスト画面",
             'date' => $date,
             'type' => "weekly",
         ];
 
-        echo $this->view->getHTML($data);
+        parent::view($data);
     }
 }

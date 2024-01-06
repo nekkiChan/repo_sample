@@ -12,7 +12,6 @@ class CalendarView extends View
 
     protected function renderContents($data = [])
     {
-        session_start();
 
         // バッファリングを開始
         ob_start();
@@ -61,13 +60,12 @@ class CalendarView extends View
             }
         </style>
 
-        <h1>calendarテスト画面</h1>
+        <h1><?= $data['title'] ?></h1>
 
         <!-- ボタンを押すとホーム画面へ -->
         <form method="post" action="<?= $this->router->generateUrl('test/calendar'); ?>">
             <div class="calendar">
                 <?php
-                var_dump($data['date']);
                 $this->weeklyCalendar->generateCalendar(new \DateTime($data['date']), null, $data['type']);
                 ?>
             </div>

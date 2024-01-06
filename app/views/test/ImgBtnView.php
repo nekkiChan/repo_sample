@@ -12,8 +12,6 @@ class ImgBtnView extends View
 
     protected function renderContents($data = [])
     {
-        session_start();
-
         // バッファリングを開始
         ob_start();
         ?>

@@ -2,28 +2,34 @@
 namespace app\controllers;
 
 use util\Router;
-use app\models\UserModel;
+use app\models\database\table\UsersModel;
+use app\models\database\table\ItemsModel;
 use app\views\View;
 
 # Controller.php
-class Controller {
+class Controller
+{
     protected $basicText;
     protected $router;
-    protected $userModel;
+    protected $usersModel;
+    protected $itemsModel;
     protected $view;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->router = new Router();
-        $this->userModel = new UserModel();
+        $this->usersModel = new UsersModel();
+        $this->itemsModel = new ItemsModel();
         $this->view = new View();
     }
 
-    public function index() {
-        session_start();
+    protected function index()
+    {
+        isset($_SESSION) ?? session_start() ;
     }
 
-    public function getText() {
-        $this->basicText = 'This is Basic';  // プロパティに値を設定
-        return $this->basicText;
+    protected function view($data = [])
+    {
+        echo $this->view->getHTML($data);
     }
 }

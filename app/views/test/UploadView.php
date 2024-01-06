@@ -23,21 +23,21 @@ class UploadView extends View
         ?>
         <h1>アップロードテスト画面</h1>
 
-        <div>
+        <div class="page">
             <input type="text" name="page" value="">
 
-            <?php if ($data['page'] > 0): ?>
+            <?php if ($data['page'] > 1): ?>
                 <a href="<?php echo $this->router->generateUrl('test/upload', ['page' => $data['page'] - 1]); ?>">前へ</a>
             <?php endif; ?>
 
-            <?php if ($data['page'] < count($data['items'])): ?>
+            <?php if ($data['page'] < count($data['items'])) : ?>
                 <a href="<?php echo $this->router->generateUrl('test/upload', ['page' => $data['page'] + 1]); ?>">次へ</a>
             <?php endif; ?>
         </div>
 
         <form method="post" action="<?php echo $this->router->generateUrl('test/upload', ['page' => $data['page']]); ?>">
             <?php
-            foreach ($data['items'] as $value) {
+            foreach ($data['items'][$data['page']-1] as $value) {
                 foreach ($value as $k => $val) {
                     $data = $val;
                     if ($k === 'id') { ?>

@@ -23,4 +23,10 @@ define('CSS_Path', VIEW_Path.'css\\');
 // IMGディレクトリ設定
 define('IMG_Path', VIEW_Path.'img\\asset\\');
 
+// DBテーブル
+// users
+define('DB_Users', 'users');
+// items
+define('DB_Items', 'items');
+
 ?>
