@@ -26,16 +26,14 @@ $router->addRoute('login', 'LoginController', 'index');
 $router->addRoute('login/auth', 'LoginController', 'auth');
 $router->addRoute('login/logout', 'LoginController', 'logout');
 // アップロード
-$router->addRoute('test/upload', 'HomeController', 'uploadTest');
-$router->addRoute('test/upload/result', 'HomeController', 'uploadTestResult');
+$router->addRoute('test/upload', 'test\\UploadController', 'index');
+// $router->addRoute('test/upload/result', 'HomeController', 'uploadTestResult');
 // 配列
 $router->addRoute('test/array', 'HomeController', 'arrayTest');
 // 画像ボタン
-$router->addRoute('test/imgbtn', 'HomeController', 'imgBtnTest');
-$router->addRoute('test/imgbtnResult', 'HomeController', 'imgBtnTestResult');
+$router->addRoute('test/imgbtn', 'test\\ImgBtnController', 'index');
 // カレンダーcalendar
-$router->addRoute('test/calendar', 'HomeController', 'calendarTest');
-$router->addRoute('test/calendarResult', 'HomeController', 'calendarTestResult');
+$router->addRoute('test/calendar', 'test\\CalendarController', 'index');
 // 表
 $router->addRoute('test/table', 'test\\TableController', 'index');
 

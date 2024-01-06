@@ -6,17 +6,17 @@ use app\views\test\TableView;
 
 class TableController extends Controller
 {
-    protected $testView;
-
     public function __construct()
     {
         parent::__construct();
-        $this->testView = new TableView();
+        $this->view = new TableView();
     }
 
     public function index()
     {
-        $testForm = $this->testView->generateTableView();
-        echo $testForm;
+        $data = [
+            'title' => "表テスト画面",
+        ];
+        echo $this->view->getHTML($data);
     }
 }

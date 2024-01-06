@@ -3,16 +3,19 @@ namespace app\controllers;
 
 use util\Router;
 use app\models\UserModel;
+use app\views\View;
 
 # Controller.php
 class Controller {
     protected $basicText;
     protected $router;
     protected $userModel;
+    protected $view;
 
     public function __construct() {
         $this->router = new Router();
         $this->userModel = new UserModel();
+        $this->view = new View();
     }
 
     public function index() {

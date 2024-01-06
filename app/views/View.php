@@ -19,7 +19,20 @@ class View
         $this->weeklyCalendar = new WeeklyCalendar();
     }
 
-    public function renderHeader()
+    protected function getHTML($data)
+    {
+        echo $this->renderHeader($data);
+        echo $this->renderContents($data);
+        echo $this->renderFooter();
+    }
+
+    protected function renderContents($data = [])
+    {
+        ob_start();
+        return ob_get_clean();
+    }
+
+    protected function renderHeader($data)
     {
         ob_start();
         ?>
@@ -27,7 +40,7 @@ class View
         <html>
 
         <head>
-            <title>Login</title>
+            <title><?= $data['title'] ?></title>
             <link rel="stylesheet" type="text/css" href="<?= HOME_URL . CSS_Path ?>style.css">
         </head>
 
@@ -37,7 +50,7 @@ class View
                 return ob_get_clean();
     }
 
-    public function renderFooter()
+    protected function renderFooter()
     {
         ob_start();
         ?>
