@@ -24,25 +24,39 @@ class UploadController extends Controller
         // フォームが送信された場合の処理
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-            $keys = array_keys($_POST);
+            $listData = $_POST;
+            unset($listData['page']);
+
+            $tableName = $listData['table'];
+            unset($listData['table']);
+
+            $keys = array_keys($listData);
 
             $data = array_map(function (...$values) use ($keys) {
                 return array_combine($keys, $values);
-            }, ...array_values($_POST));
+            }, ...array_values($listData));
+
+            switch ($tableName) {
+                case DB_Users:
+                    $tableModel = $this->usersModel;
+                    break;
+                case DB_Items:
+                    $tableModel = $this->itemsModel;
+                    break;
+                default:
+                    break;
+            }
 
             foreach ($data as $key => $value) {
                 // 変更されているか確認
-                if ($this->usersModel->compareDataWithDB($data[$key])) {
+                if ($tableModel->compareDataWithDB($data[$key])) {
                     // アップデート
-                    $this->usersModel->updateData($data[$key]);
+                    $tableModel->updateData($data[$key]);
+                    $_SESSION['message'][] = $tableName . 'テーブルの ID' . $data[$key]['id'] . 'のデータを変更しました<br>';
                 } else {
-                    $_SESSION['message'][] = $data[$key]['username'] . 'のデータに変更はありません<br>';
+                    $_SESSION['message'][] = $tableName . 'テーブルの ID' . $data[$key]['id'] . 'のデータに変更はありません<br>';
                 }
             }
-        }
-
-        if ($_SERVER["REQUEST_METHOD"] == "GET") {
-            var_dump($_GET);
         }
 
         // USERSテーブル
@@ -65,6 +79,7 @@ class UploadController extends Controller
         $users = array_chunk($users, $usersItemsPerPage);
         // URLから 'page' パラメータを取得
         $usersPage = isset($_GET[DB_Users]) ? intval($_GET[DB_Users]) : 1;
+        $usersPage = isset($_POST['page'][DB_Users]) ? intval($_POST['page'][DB_Users]) : $usersPage;
 
         // 1ページに表示するアイテム数の設定
         $itemsItemsPerPage = 1;
@@ -72,6 +87,7 @@ class UploadController extends Controller
         $items = array_chunk($items, $itemsItemsPerPage);
         // URLから 'page' パラメータを取得
         $itemsPage = isset($_GET[DB_Items]) ? intval($_GET[DB_Items]) : 1;
+        $itemsPage = isset($_POST['page'][DB_Items]) ? intval($_POST['page'][DB_Items]) : $itemsPage;
 
         $data = [
             'title' => "アップロードテスト画面",
@@ -79,11 +95,13 @@ class UploadController extends Controller
                 [
                     DB_Users => [
                         'title' => "Users",
+                        'table' => DB_Users,
                         'items' => $users,
                         'page' => $usersPage,
                     ],
                     DB_Items => [
                         'title' => "Items",
+                        'table' => DB_Items,
                         'items' => $items,
                         'page' => $itemsPage,
                     ],
