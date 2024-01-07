@@ -29,4 +29,10 @@ define('DB_Users', 'users');
 // items
 define('DB_Items', 'items');
 
+// マスタ
+// users
+define('Master_Users', 'Users');
+// items
+define('Master_Items', 'Items');
+
 ?>

@@ -60,53 +60,49 @@ class UploadController extends Controller
         }
 
         // USERSテーブル
-        $users = $this->usersModel->getDataByCredentials();
-        $usersColumns = $this->usersModel->getColumns();
-        $users = array_map(function ($item) use ($usersColumns) {
-            return array_intersect_key($item, array_flip($usersColumns));
-        }, $users);
+        $users = $this->getTableData($this->usersModel);
         // ITEMSテーブル
-        $items = $this->itemsModel->getDataByCredentials();
-        $itemsColumns = $this->itemsModel->getColumns();
-        $items = array_map(function ($item) use ($itemsColumns) {
-            return array_intersect_key($item, array_flip($itemsColumns));
-        }, $items);
+        $items = $this->getTableData($this->itemsModel);
 
-        // 1ページに表示するアイテム数の設定
-        $usersItemsPerPage = 3;
-        // ページ数ごとのアイテムの設定
-        $users = array_chunk($users, $usersItemsPerPage);
-        // URLから 'page' パラメータを取得
-        $usersPage = isset($_GET[DB_Users]) ? intval($_GET[DB_Users]) : 1;
-        $usersPage = isset($_POST['page'][DB_Users]) ? intval($_POST['page'][DB_Users]) : $usersPage;
-
-        // 1ページに表示するアイテム数の設定
-        $itemsItemsPerPage = 2;
-        // ページ数ごとのアイテムの設定
-        $items = array_chunk($items, $itemsItemsPerPage);
-        // URLから 'page' パラメータを取得
-        $itemsPage = isset($_GET[DB_Items]) ? intval($_GET[DB_Items]) : 1;
-        $itemsPage = isset($_POST['page'][DB_Items]) ? intval($_POST['page'][DB_Items]) : $itemsPage;
+        $contents[DB_Users] = $this->getContents($this->usersModel);
+        $contents[DB_Items] = $this->getContents($this->itemsModel);
 
         $data = [
             'title' => "アップロードテスト画面",
-            'contents' =>
-                [
-                    DB_Users => [
-                        'title' => "Users",
-                        'table' => DB_Users,
-                        'items' => $users,
-                        'page' => $usersPage,
-                    ],
-                    DB_Items => [
-                        'title' => "Items",
-                        'table' => DB_Items,
-                        'items' => $items,
-                        'page' => $itemsPage,
-                    ],
-                ]
+            'contents' => $contents,
         ];
 
         parent::view($data);
+    }
+
+    protected function getContents($tableModel)
+    {
+        $items = $this->getTableData($tableModel);
+        $items = array_chunk($items, $tableModel->getItemsPerPage());
+        return [
+            'title' => $tableModel->getMasterName(),
+            'table' => $tableModel->getTableName(),
+            'items' => $items,
+            'page' => $this->getNumberPage($items, $tableModel),
+        ];
+    }
+
+    protected function getTableData($tableModel)
+    {
+        $tableData = $tableModel->getDataByCredentials();
+        $tableColumns = $tableModel->getColumns();
+        $tableData = array_map(function ($item) use ($tableColumns) {
+            return array_intersect_key($item, array_flip($tableColumns));
+        }, $tableData);
+
+        return $tableData;
+    }
+
+    protected function getNumberPage($items, $tableModel)
+    {
+        $page = isset($_GET[$tableModel->getTableName()]) ? intval($_GET[$tableModel->getTableName()]) : 1;
+        $page = isset($_POST['page'][$tableModel->getTableName()]) ? intval($_POST['page'][$tableModel->getTableName()]) : $page;
+
+        return $page;
     }
 }

@@ -10,6 +10,11 @@ class UsersModel extends DatabaseModel
         parent::__construct();
         // テーブル名
         $this->tableName = DB_Users;
+        // マスター名
+        $this->tableTitle = Master_Users;
+        // ページ毎アイテム
+        $this->itemsPerPage = 3;
+        // ログ
         $this->logModel->logMessage($this->getQueryDataTable());
 
         // テーブルが存在しない場合のみ作成
@@ -37,6 +42,17 @@ class UsersModel extends DatabaseModel
     {
         return $this->tableName;
     }
+
+    public function getMasterName()
+    {
+        return $this->tableTitle;
+    }
+
+    public function getItemsPerPage()
+    {
+        return $this->itemsPerPage;
+    }
+
 
     /**
      * テーブルのカラム情報を返す

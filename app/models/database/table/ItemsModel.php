@@ -10,6 +10,11 @@ class ItemsModel extends DatabaseModel
         parent::__construct();
         // テーブル名
         $this->tableName = DB_Items;
+        // マスター名
+        $this->tableTitle = Master_Items;
+        // ページ毎アイテム
+        $this->itemsPerPage = 3;
+        // ログ
         $this->logModel->logMessage($this->getQueryDataTable());
 
         // テーブルが存在しない場合のみ作成
@@ -36,6 +41,16 @@ class ItemsModel extends DatabaseModel
     public function getTableName()
     {
         return $this->tableName;
+    }
+
+    public function getMasterName()
+    {
+        return $this->tableTitle;
+    }
+
+    public function getItemsPerPage()
+    {
+        return $this->itemsPerPage;
     }
 
     /**
