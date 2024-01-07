@@ -120,7 +120,7 @@ class DatabaseConnector
      * @param array $params パラメーター値の配列。
      * @return array|null 取得した行、または失敗時にはnull。
      */
-    public function fetchSingleResult($query, $params)
+    public function fetchSingleResultWithParams($query, $params)
     {
         try {
             $this->connectToDatabase();
@@ -135,6 +135,28 @@ class DatabaseConnector
     }
 
     /**
+     * パラメーター付きでクエリ結果から複数のレコードを取得するメソッド
+     *
+     * @param string $query プレースホルダーを含むSQLクエリ。
+     * @param array $params パラメーター値の配列。
+     * @return array|null 取得した行の配列、または失敗時にはnull。
+     */
+    public function fetchResultsWithParams($query, $params)
+    {
+        try {
+            $this->connectToDatabase();
+            $statement = $this->connection->prepare($query);
+            $statement->execute($params);
+            $this->closeConnection();
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            $this->logModel->logMessage("データの取得中にエラーが発生しました: " . $e->getMessage());
+            return null;
+        }
+    }
+
+
+    /**
      * データが既存のデータと同じであるかをチェックするメソッド
      *
      * @param array $data チェックするデータの配列。
@@ -143,8 +165,8 @@ class DatabaseConnector
      */
     private function dataExists($data, $conditions)
     {
-        $databaseModel =  new DatabaseModel();
-        $existingData = $this->fetchSingleResult("SELECT * FROM " . $databaseModel->getTableName() . " WHERE " . implode(" AND ", array_map(function ($column) {
+        $databaseModel = new DatabaseModel();
+        $existingData = $this->fetchSingleResultWithParams("SELECT * FROM " . $databaseModel->getTableName() . " WHERE " . implode(" AND ", array_map(function ($column) {
             return "$column = ?";
         }, array_keys($conditions))), array_values($conditions));
 

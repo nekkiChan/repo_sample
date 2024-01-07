@@ -38,6 +38,15 @@ class UsersModel extends DatabaseModel
         return $this->tableName;
     }
 
+    /**
+     * テーブルのカラム情報を返す
+     * 
+     */
+    public function getColumns()
+    {
+        return ['id', 'username', 'email'];
+    }
+
     // プレースホルダーを使用したデータ挿入の例
     public function insertData($data)
     {
@@ -56,7 +65,7 @@ class UsersModel extends DatabaseModel
     }
 
     // ユーザー名からユーザーを取得
-    public function getDataByCredentials($data)
+    public function getDataByCredentials($data = [])
     {
         return parent::getDataByCredentials($data);
     }

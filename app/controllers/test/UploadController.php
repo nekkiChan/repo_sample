@@ -60,21 +60,20 @@ class UploadController extends Controller
         }
 
         // USERSテーブル
-        $query = 'SELECT id, username, email FROM ' . $this->usersModel->getTableName();
-        $users = $this->usersModel->dbConnector->fetchAll($query);
+        $users = $this->usersModel->getDataByCredentials();
+        $usersColumns = $this->usersModel->getColumns();
+        $users = array_map(function ($item) use ($usersColumns) {
+            return array_intersect_key($item, array_flip($usersColumns));
+        }, $users);
         // ITEMSテーブル
-        $query = 'SELECT id, name FROM ' . $this->itemsModel->getTableName();
-        $items = $this->itemsModel->dbConnector->fetchAll($query);
-
-        usort($users, function ($a, $b) {
-            return $a['id'] - $b['id'];
-        });
-        usort($items, function ($a, $b) {
-            return $a['id'] - $b['id'];
-        });
+        $items = $this->itemsModel->getDataByCredentials();
+        $itemsColumns = $this->itemsModel->getColumns();
+        $items = array_map(function ($item) use ($itemsColumns) {
+            return array_intersect_key($item, array_flip($itemsColumns));
+        }, $items);
 
         // 1ページに表示するアイテム数の設定
-        $usersItemsPerPage = 1;
+        $usersItemsPerPage = 3;
         // ページ数ごとのアイテムの設定
         $users = array_chunk($users, $usersItemsPerPage);
         // URLから 'page' パラメータを取得
@@ -82,7 +81,7 @@ class UploadController extends Controller
         $usersPage = isset($_POST['page'][DB_Users]) ? intval($_POST['page'][DB_Users]) : $usersPage;
 
         // 1ページに表示するアイテム数の設定
-        $itemsItemsPerPage = 1;
+        $itemsItemsPerPage = 2;
         // ページ数ごとのアイテムの設定
         $items = array_chunk($items, $itemsItemsPerPage);
         // URLから 'page' パラメータを取得

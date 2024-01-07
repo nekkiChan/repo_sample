@@ -38,6 +38,15 @@ class ItemsModel extends DatabaseModel
         return $this->tableName;
     }
 
+    /**
+     * テーブルのカラム情報を返す
+     * 
+     */
+    public function getColumns()
+    {
+        return ['id', 'name'];
+    }
+
     // プレースホルダーを使用したデータ挿入の例
     public function insertData($data)
     {
@@ -56,7 +65,7 @@ class ItemsModel extends DatabaseModel
     }
 
     // ユーザー名からユーザーを取得
-    public function getDataByCredentials($data)
+    public function getDataByCredentials($data = [])
     {
         return parent::getDataByCredentials($data);
     }

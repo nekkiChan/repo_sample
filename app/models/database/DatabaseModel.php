@@ -28,6 +28,15 @@ class DatabaseModel extends Model
         return $this->tableName;
     }
 
+    /**
+     * テーブルのカラム情報を返す
+     * 
+     */
+    public function getColumns()
+    {
+        return [];
+    }
+
     protected function isTableExists()
     {
         $query = "
@@ -40,7 +49,7 @@ class DatabaseModel extends Model
         $params = [':table' => $this->getTableName()];
 
         try {
-            $result = $this->dbConnector->fetchSingleResult($query, $params);
+            $result = $this->dbConnector->fetchSingleResultWithParams($query, $params);
             return $result['exists'] === 't';
         } catch (Exception $e) {
             return false;
@@ -85,6 +94,7 @@ class DatabaseModel extends Model
     protected function compareDataWithDB($data)
     {
         $existData = $this->getDataByCredentials(['id' => $data['id']]);
+        $existData = reset($existData);
         $existData = array_intersect_key($existData, array_flip(array_keys($data)));
 
         return array_diff_assoc($data, $existData);
@@ -125,25 +135,30 @@ class DatabaseModel extends Model
         $this->dbConnector->executeQueryWithParams($query, $params);
     }
 
-    public function getDataByCredentials($data)
+    public function getDataByCredentials($data = [])
     {
         // WHERE句の条件を格納する配列
         $conditions = array();
 
         // プレースホルダー（SQLインジェクション対策）
         $params = array();
+        $query = 'SELECT * FROM ' . $this->getTableName();
 
-        // $data の各要素に対して条件を構築
-        foreach ($data as $key => $value) {
-            $conditions[] = "$key = :$key";
-            $params[":$key"] = $value;
+        if (!empty($data)) {
+            // $data の各要素に対して条件を構築
+            foreach ($data as $key => $value) {
+                $conditions[] = "$key = :$key";
+                $params[":$key"] = $value;
+            }
+            $conditionStr = implode(' AND ', $conditions);
+            $query .= " WHERE $conditionStr";
         }
 
-        $conditionStr = implode(' AND ', $conditions);
+        $result = $this->dbConnector->fetchResultsWithParams($query, $params);
 
-        $query = 'SELECT * FROM ' . $this->getTableName() . " WHERE $conditionStr";
-
-        $result = $this->dbConnector->fetchSingleResult($query, $params);
+        usort($result, function ($a, $b) {
+            return $a['id'] - $b['id'];
+        });
 
         return $result;
     }
