@@ -1,7 +1,7 @@
 <?php
 namespace app\controllers;
 
-use util\Router;
+use app\models\util\Router;
 use app\models\database\table\UsersModel;
 use app\models\database\table\ItemsModel;
 use app\views\View;

@@ -1,9 +1,9 @@
 <?php
 namespace app\views;
 
+use app\models\util\Router;
+use app\models\util\Calendar;
 use app\views\js\Script;
-use util\Router;
-use util\WeeklyCalendar;
 
 
 class View
@@ -15,7 +15,7 @@ class View
     public function __construct()
     {
         $this->router = new Router();
-        $this->weeklyCalendar = new WeeklyCalendar();
+        $this->weeklyCalendar = new Calendar();
         $this->script = new Script();
     }
 

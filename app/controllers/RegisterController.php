@@ -2,7 +2,6 @@
 namespace app\controllers;
 
 use app\controllers\Controller;
-use app\models\UserModel;
 use app\views\RegisterView;
 
 class RegisterController extends Controller

@@ -1,7 +1,7 @@
 <?php
-namespace util;
+namespace app\models\util;
 
-class WeeklyCalendar
+class Calendar
 {
     private $startDate;
     private $startWeek;
@@ -24,7 +24,6 @@ class WeeklyCalendar
         echo '<button name="option" value="next">次月へ</button>';
         echo "<input type='hidden' name='calendarType' value=$type>";
 
-        // echo '<h2>' . date('F Y', $this->firstDay) . '</h2>';
         echo '<table>';
         echo '<thead>';
         echo '<tr>';

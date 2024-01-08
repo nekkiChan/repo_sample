@@ -1,10 +1,7 @@
 <?php
 namespace app\models;
 
-use \Exception;
-
 use \app\models\LogModel;
-use \app\models\DatabaseConnector;
 
 class Model
 {

@@ -1,5 +1,5 @@
 <?php
-namespace util;
+namespace app\models\util;
 
 class Router
 {

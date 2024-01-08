@@ -14,8 +14,8 @@ spl_autoload_register(function ($className) {
     }
 });
 
-require_once 'util/route.php';
-use util\Router;
+require_once 'app/models/util/Router.php';
+use app\models\util\Router;
 
 $router = new Router();
 $router->addRoute('', 'HomeController', 'index');
