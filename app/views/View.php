@@ -1,8 +1,8 @@
 <?php
 namespace app\views;
 
+use app\views\js\Script;
 use util\Router;
-use util\Calendar;
 use util\WeeklyCalendar;
 
 
@@ -10,11 +10,13 @@ class View
 {
     protected $router;
     protected $weeklyCalendar;
+    protected $script;
 
     public function __construct()
     {
         $this->router = new Router();
         $this->weeklyCalendar = new WeeklyCalendar();
+        $this->script = new Script();
     }
 
     protected function getHTML($data)

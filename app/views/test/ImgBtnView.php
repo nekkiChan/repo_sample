@@ -5,6 +5,10 @@ use app\views\View;
 
 class ImgBtnView extends View
 {
+    public function __construct() {
+        parent::__construct();
+        echo $this->script->toggleValue();
+    }
     public function getHTML($data)
     {
         parent::getHTML($data);
@@ -46,32 +50,6 @@ class ImgBtnView extends View
                 height: auto;
             }
         </style>
-
-        <script>
-            function toggleValue(element) {
-                // hidden inputを取得
-                var hiddenInput = element.nextElementSibling;
-
-                // 現在のvalueを取得
-                var currentValue = hiddenInput.value;
-
-                // valueを反転させる
-                var newValue = (currentValue === 'true') ? 'false' : 'true';
-
-                // hidden inputのvalueを更新
-                hiddenInput.value = newValue;
-
-                // デバッグ用に背景色を変更
-                if (newValue === 'false') {
-                    element.style.backgroundColor = 'blue'; // falseの場合、背景色を青に設定
-                } else {
-                    element.style.backgroundColor = 'red'; // trueの場合、背景色を赤に設定
-                }
-
-                // クリックされたことを確認するためにコンソールにログを出力（不要であれば削除しても構いません）
-                console.log('New value:', newValue);
-            }
-        </script>
 
         <h2><?= $data['title'] ?></h2>
         <!-- ボタンを押すとホーム画面へ -->
