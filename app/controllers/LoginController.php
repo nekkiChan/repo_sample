@@ -13,7 +13,6 @@ class LoginController extends Controller
     public function __construct($userModel = null, $loginView = null)
     {
         parent::__construct();
-        $this->userModel = $userModel ?? new UserModel();
         $this->loginView = $loginView ?? new LoginView();
     }
 

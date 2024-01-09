@@ -46,4 +46,28 @@ class Script
         return $code;
     }
 
+    public function addRow()
+    {
+        $code = <<<HTML
+        <script>
+            // JavaScriptで新しい行を追加するメソッド
+            function addRow(element) {
+                // マスタ名
+                var masterName = element;
+                // マスタのtableタグ
+                var table = document.getElementById(masterName);
+                // マスタのthタグの数
+                var headerCount = table.getElementsByTagName('th').length;
+                // Rowの挿入
+                var newRow = table.insertRow(table.rows.length);
+                //  thタグの数だけセルを生成
+                for (let index = 0; index < headerCount; index++) {
+                    newRow.insertCell(index).innerHTML = masterName;
+                }
+            }
+        </script>
+        HTML;
+
+        return $code;
+    }
 }

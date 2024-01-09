@@ -5,9 +5,12 @@ use app\views\View;
 
 class LoginView extends View
 {
-    public function generateLoginForm()
+    public function getHTML($data){
+        parent::getHTML($data);
+    }
+
+    public function renderContents($data = [])
     {
-        echo $this->renderHeader();
 
         // バッファリングを開始
         ob_start();
@@ -26,11 +29,8 @@ class LoginView extends View
         </form>
 
         <?php
-        echo $this->renderFooter();
 
-        $html = ob_get_clean();  // バッファの内容を取得してバッファリングを終了
-
-        return $html;
+        return ob_get_clean();  // バッファの内容を取得してバッファリングを終了
     }
 
     public function showError($errorMessage)
