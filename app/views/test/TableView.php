@@ -96,8 +96,8 @@ class TableView extends View
             <?= $data['title'] ?>
         </h2>
 
-        <form method="post" action="<?php echo $this->router->generateUrl('test/upload', ['page' => $data['page']]); ?>">
-            <input type="hidden" name="table" value="<?= $data['table'] ?>">
+        <form method="post" action="<?php echo $this->router->generateUrl('test/table', ['page' => $data['page']]); ?>">
+            <input type="hidden" name="table" value="<?= 'master-' . $data['table'] ?>">
 
             <?php foreach ($getData as $key => $value): ?>
                 <input type="hidden" name="page[<?= $key ?>]" value="<?= $value ?>">

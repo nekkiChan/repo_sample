@@ -12,19 +12,8 @@ class TableController extends Controller
         $this->view = new TableView();
     }
 
-    // public function index()
-    // {
-    //     parent::index();
-    //     $data = [
-    //         'title' => "表テスト画面",
-    //     ];
-    //     parent::view($data);
-    // }
-
     public function index()
     {
-        parent::index();
-
         parent::index();
         if (isset($_SESSION['message'])) {
             unset($_SESSION['message']);
@@ -32,6 +21,8 @@ class TableController extends Controller
 
         // フォームが送信された場合の処理
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+            var_dump($_POST['table']);
 
             $listData = $_POST;
             unset($listData['page']);
@@ -43,10 +34,10 @@ class TableController extends Controller
             }, ...array_values($listData));
 
             switch ($_POST['table']) {
-                case DB_Users:
+                case 'master-' . DB_Users:
                     $tableModel = $this->usersModel;
                     break;
-                case DB_Items:
+                case 'master-' . DB_Items:
                     $tableModel = $this->itemsModel;
                     break;
                 default:

@@ -62,7 +62,7 @@ class Script
                 var newRow = table.insertRow(table.rows.length);
                 //  thタグの数だけセルを生成
                 for (let index = 0; index < headerCount; index++) {
-                    newRow.insertCell(index).innerHTML = masterName;
+                    newRow.insertCell(index).innerHTML = "<input type='text' placeholder='" + masterName + "'>";
                 }
             }
         </script>
