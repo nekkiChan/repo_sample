@@ -34,10 +34,10 @@ class TableController extends Controller
             }, ...array_values($listData));
 
             switch ($_POST['table']) {
-                case 'master-' . DB_Users:
+                case DB_Users:
                     $tableModel = $this->usersModel;
                     break;
-                case 'master-' . DB_Items:
+                case DB_Items:
                     $tableModel = $this->itemsModel;
                     break;
                 default:

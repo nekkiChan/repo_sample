@@ -46,10 +46,12 @@ class Script
         return $code;
     }
 
-    public function addRow()
+    public function addRow($contents)
     {
+        $master = $contents['table'];
         $code = <<<HTML
         <script>
+            var master = '$master';
             // JavaScriptで新しい行を追加するメソッド
             function addRow(element) {
                 // マスタ名

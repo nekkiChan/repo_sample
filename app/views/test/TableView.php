@@ -9,7 +9,6 @@ class TableView extends View
     public function __construct()
     {
         parent::__construct();
-        $this->value = 'myTable';
         // echo $this->script->addRow($this->value);
     }
     public function getHTML($data)
@@ -28,14 +27,13 @@ class TableView extends View
             }
         }
 
-        echo $this->script->addRow();
-
         $getData = array();
         foreach ($data['contents'] as $key => $value) {
             $getData[$key] = $value['page'];
         }
 
         foreach ($data['contents'] as $contents) {
+            echo $this->script->addRow($contents);
             echo $this->goPage($contents, $getData);
             echo $this->generateTable($contents, $getData);
         }
@@ -97,7 +95,7 @@ class TableView extends View
         </h2>
 
         <form method="post" action="<?php echo $this->router->generateUrl('test/table', ['page' => $data['page']]); ?>">
-            <input type="hidden" name="table" value="<?= 'master-' . $data['table'] ?>">
+            <input type="hidden" name="table" value="<?= $data['table'] ?>">
 
             <?php foreach ($getData as $key => $value): ?>
                 <input type="hidden" name="page[<?= $key ?>]" value="<?= $value ?>">
@@ -135,7 +133,7 @@ class TableView extends View
             <!-- 他のフォーム要素も同様に設定 -->
             <input type="submit" value="Submit">
         </form>
-        <button onclick="addRow('<?php echo 'master-' . $data['table']; ?>')">新しい行を追加</button>
+        <button onclick="addRow('<?= $data['table'] ?>')">新しい行を追加</button>
 
         <?php
         return ob_get_clean();  // バッファの内容を取得してバッファリングを終了
