@@ -21,8 +21,9 @@ class CalendarController extends Controller
 
         // フォームが送信されたかどうかを確認
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            var_dump(new \DateTime($_POST['date']));
             // POSTデータを取得
-            $option = $_POST['option'];
+            $option = $_POST['calendarType'];
 
             // dateの設定
             if ($_POST['calendarType'] == 'monthly') {

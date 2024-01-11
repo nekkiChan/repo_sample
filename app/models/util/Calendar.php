@@ -19,24 +19,25 @@ class Calendar
 
     private function generateHeaderCalendar($selectedDate, $type)
     {
-        echo '<input type="hidden" name="date" value="' . $selectedDate . '">';
-        echo '<button name="option" value="previous">前月へ</button>';
-        echo '<button name="option" value="next">次月へ</button>';
-        echo "<input type='hidden' name='calendarType' value=$type>";
+        $code = '<input type="hidden" name="date" value="' . $selectedDate . '">';
+        $code .= '<button name="option" value="previous">前月へ</button>';
+        $code .= '<button name="option" value="next">次月へ</button>';
+        $code .= "<input type='hidden' name='calendarType' value=$type>";
 
-        echo '<table>';
-        echo '<thead>';
-        echo '<tr>';
-        echo '<th>Sun</th>';
-        echo '<th>Mon</th>';
-        echo '<th>Tue</th>';
-        echo '<th>Wed</th>';
-        echo '<th>Thu</th>';
-        echo '<th>Fri</th>';
-        echo '<th>Sat</th>';
-        echo '</tr>';
-        echo '</thead>';
+        $code .= '<table>';
+        $code .= '<thead>';
+        $code .= '<tr>';
+        $code .= '<th>Sun</th>';
+        $code .= '<th>Mon</th>';
+        $code .= '<th>Tue</th>';
+        $code .= '<th>Wed</th>';
+        $code .= '<th>Thu</th>';
+        $code .= '<th>Fri</th>';
+        $code .= '<th>Sat</th>';
+        $code .= '</tr>';
+        $code .= '</thead>';
 
+        return $code;
     }
 
     private static function getDayCountOfWeek($startWeek)
@@ -64,23 +65,25 @@ class Calendar
     {
         $this->startDate = $customStartDate !== null ? $customStartDate : clone $this->startDate;
         $this->startWeek = $customStartWeek !== null ? $customStartWeek : $this->startWeek;
-        $this->generateHeaderCalendar($this->startDate->format('Y-m-d'), $calendarType);
+        $code = $this->generateHeaderCalendar($this->startDate->format('Y-m-d'), $calendarType);
 
-        $this->tableBody = '<tr>';
+        $code .= '<tr>';
         if ($calendarType == 'weekly') {
             // 週間カレンダーを生成
-            $this->generateWeekCalendar();
+            $code .= $this->generateWeekCalendar();
         } else {
-            $this->generateMonthCalendar();
+            $code .= $this->generateMonthCalendar();
         }
-        $this->tableBody .= '</tr></table>';
+        $code .= '</tr></table>';
 
         // テーブルbody部分を表示
-        echo $this->tableBody;
+        return $code;
     }
 
     private function generateWeekCalendar()
     {
+        $code = '';
+
         // 週間カレンダーを生成
         foreach ($this->getDayCountOfWeek($this->startWeek) as $weekCount => $weekName) {
             if ($weekName == $this->startDate->format('D')) {
@@ -90,35 +93,39 @@ class Calendar
         }
         for ($i = 0; $i < 7; $i++) {
             // 現在の日付と曜日を表示
-            $this->tableBody .= '<td>' . $this->startDate->format('m / d') . '</td>';
+            $code .= '<td>' . $this->startDate->format('m / d') . '</td>';
             // 次の日に移動
             $this->startDate->modify('+1 day');
         }
+
+        return $code;
     }
 
     private function generateMonthCalendar()
     {
         $SDay = (clone $this->startDate)->modify('first day of this month');
         $monthName = $SDay->format('m');
-        var_dump($SDay->format('m'));
 
+        $code = '';
         for ($i = 0; $i < 6; $i++) {
-            echo '<tr>';
+            $code .= '<tr>';
             for ($j = 0; $j < 7; $j++) {
-                echo '<td>';
+                $code .= '<td>';
                 if ($i != 0 || $j >= $SDay->format('w')) {
                     if ($monthName == $SDay->format('m')) {
-                        echo $SDay->format('d');
+                        $code .= $SDay->format('d');
                         $SDay->modify('+1 day');
                     }
                 }
-                echo '</td>';
+                $code .= '</td>';
             }
-            echo '</tr>';
+            $code .= '</tr>';
             if ($monthName != $SDay->format('m')) {
                 break;
             }
         }
+
+        return $code;
     }
 }
 

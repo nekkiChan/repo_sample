@@ -60,16 +60,27 @@ class CalendarView extends View
             }
         </style>
 
-        <h2><?= $data['title'] ?></h2>
+        <h2>
+            <?= $data['title'] ?>
+        </h2>
 
         <!-- ボタンを押すとホーム画面へ -->
         <form method="post" action="<?= $this->router->generateUrl('test/calendar'); ?>">
             <div class="calendar">
                 <?php
-                $this->weeklyCalendar->generateCalendar(new \DateTime($data['date']), null, $data['type']);
+                echo $this->weeklyCalendar->generateCalendar(new \DateTime($data['date']), null, $data['type']);
                 ?>
             </div>
+            <input type="text" name="" id="" onclick="addDateSelects(this)">
+
             <input type="submit" value="Submit">
+        </form>
+
+        <form method="post" id="yourFormId" action="<?= $this->router->generateUrl('test/calendar'); ?>">
+            <!-- 他のフォーム要素やコンテンツがここに入るかもしれません。 -->
+            <!-- 生成したJavaScriptコードを出力 -->
+            <?php echo $this->script->addDateSelects('yourFormId'); ?>
+            <button type="submit">botan</button>
         </form>
 
         <?php
