@@ -4,6 +4,7 @@ namespace app\controllers;
 use app\models\util\Router;
 use app\models\database\table\UsersModel;
 use app\models\database\table\ItemsModel;
+use app\models\Model;
 use app\views\View;
 
 # Controller.php
@@ -13,6 +14,7 @@ class Controller
     protected $router;
     protected $usersModel;
     protected $itemsModel;
+    protected $model;
     protected $view;
 
     public function __construct()
@@ -20,6 +22,7 @@ class Controller
         $this->router = new Router();
         $this->usersModel = new UsersModel();
         $this->itemsModel = new ItemsModel();
+        $this->model = new Model();
         $this->view = new View();
     }
 

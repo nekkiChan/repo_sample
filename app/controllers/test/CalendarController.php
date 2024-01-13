@@ -2,6 +2,7 @@
 namespace app\controllers\test;
 
 use app\controllers\Controller;
+use app\models\test\CalendarModel;
 use app\views\test\CalendarView;
 
 class CalendarController extends Controller
@@ -9,6 +10,7 @@ class CalendarController extends Controller
     public function __construct()
     {
         parent::__construct();
+        $this->model = new CalendarModel();
         $this->view = new CalendarView();
     }
 
@@ -16,29 +18,9 @@ class CalendarController extends Controller
     {
         parent::index();
 
-        $timestamp = strtotime(date('Y-m-d'));
-        $date = date("Y-m-d", $timestamp);
-
         // フォームが送信されたかどうかを確認
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            var_dump(new \DateTime($_POST['date']));
-            // POSTデータを取得
-            $option = $_POST['calendarType'];
-
-            // dateの設定
-            if ($_POST['calendarType'] == 'monthly') {
-                $timestamp = ($option == 'next') ? strtotime($_POST['date'] . '+1 month') : strtotime($_POST['date'] . '-1 month');
-            } else if ($_POST['calendarType'] == 'weekly') {
-                // var_dump($_POST);
-                $timestamp = ($option == 'next') ? strtotime($_POST['date'] . '+1 week') : strtotime($_POST['date'] . '-1 week');
-            }
-            $date = date("Y-m-d", $timestamp);
-
-            // 取得したデータをビューに渡す
-            $data = [
-                'date' => $date,
-            ];
-        }
+        $date = isset($this->model->dataWhenPostRequest) ? $this->model->dataWhenPostRequest : null;
+        var_dump($this->model->dataWhenPostRequest);
 
         // 取得したデータをビューに渡す
         $data = [

@@ -15,7 +15,6 @@ class CalendarView extends View
 
         // バッファリングを開始
         ob_start();
-
         ?>
 
         <style>
@@ -65,22 +64,19 @@ class CalendarView extends View
         </h2>
 
         <!-- ボタンを押すとホーム画面へ -->
-        <form method="post" action="<?= $this->router->generateUrl('test/calendar'); ?>">
+        <form method="post" id="yourFormId" action="<?= $this->router->generateUrl('test/calendar'); ?>">
+            <div id="select">
+                <?php echo $this->script->addDateSelects('yourFormId','select', new \DateTime($data['date'])); ?>
+            </div>
+            
             <div class="calendar">
                 <?php
                 echo $this->weeklyCalendar->generateCalendar(new \DateTime($data['date']), null, $data['type']);
                 ?>
+                <input type="submit" value="button">
             </div>
-            <input type="text" name="" id="" onclick="addDateSelects(this)">
 
             <input type="submit" value="Submit">
-        </form>
-
-        <form method="post" id="yourFormId" action="<?= $this->router->generateUrl('test/calendar'); ?>">
-            <!-- 他のフォーム要素やコンテンツがここに入るかもしれません。 -->
-            <!-- 生成したJavaScriptコードを出力 -->
-            <?php echo $this->script->addDateSelects('yourFormId'); ?>
-            <button type="submit">botan</button>
         </form>
 
         <?php
