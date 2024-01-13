@@ -4,7 +4,6 @@ namespace app\views\js;
 header("Access-Control-Allow-Origin: *");
 
 use \app\models\LogModel;
-use app\models\util\Calendar;
 
 class Script
 {
@@ -76,7 +75,7 @@ class Script
         return $code;
     }
 
-    public function addDateSelects($formId, $parentId ,$date)
+    public function addDateSelects($formId, $parentId, $date)
     {
         // 現在の年月日を取得
         $currentYear = $date->format('Y');
@@ -111,7 +110,7 @@ class Script
 
             /**
              * JavaScriptで年月日のセレクトボックスを追加するメソッド
-             */ 
+             */
             function addDateSelects(formId, parentId) {
                 // フォームの要素を取得
                 var form = document.getElementById(parentId);
@@ -121,17 +120,17 @@ class Script
                 // selectField.style.backgroundColor = "red";
                 selectField.style.display = "flex";
                 form.appendChild(selectField);
-    
+
                 // 年のセレクトボックスを生成
                 var yearSelect = document.createElement('div');
                 yearSelect.innerHTML = '$yearSelect';
                 selectField.appendChild(yearSelect);
-    
+
                 // 月のセレクトボックスを生成
                 var monthSelect = document.createElement('div');
                 monthSelect.innerHTML = '$monthSelect';
                 selectField.appendChild(monthSelect);
-    
+
                 // 日のセレクトボックスを生成
                 var daySelect = document.createElement('div');
                 daySelect.innerHTML = '$daySelect';
@@ -149,11 +148,11 @@ class Script
                 monthSelect.querySelector('select').addEventListener('change', updateTextBoxes);
                 daySelect.querySelector('select').addEventListener('change', updateTextBoxes);
 
-    
+
                 // 年月が変更されたら日のセレクトボックスを更新
                 yearSelect.querySelector('select').addEventListener('change', updateDays);
                 monthSelect.querySelector('select').addEventListener('change', updateDays);
-    
+
                 // 初回実行
                 updateDays();
 
@@ -182,7 +181,7 @@ class Script
                  * セレクトボックスが変更されたときにinputに値を与えてform送信
                  */
                 function updateTextBoxes() {
-                    
+
                     var selectedYear = parseInt(yearSelect.querySelector('select').value);
                     var selectedMonth = parseInt(monthSelect.querySelector('select').value);
                     var selectedDay = parseInt(daySelect.querySelector('select').value);

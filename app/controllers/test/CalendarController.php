@@ -20,7 +20,6 @@ class CalendarController extends Controller
 
         // フォームが送信されたかどうかを確認
         $date = isset($this->model->dataWhenPostRequest) ? $this->model->dataWhenPostRequest : null;
-        var_dump($this->model->dataWhenPostRequest);
 
         // 取得したデータをビューに渡す
         $data = [

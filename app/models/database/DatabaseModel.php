@@ -9,7 +9,6 @@ class DatabaseModel extends Model
     protected $tableName;
     protected $tableTitle;
     protected $itemsPerPage;
-    protected $logModel;
     public $dbConnector;
 
     public function __construct()

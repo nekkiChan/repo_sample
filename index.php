@@ -32,10 +32,12 @@ $router->addRoute('test/upload', 'test\\UploadController', 'index');
 $router->addRoute('test/array', 'HomeController', 'arrayTest');
 // 画像ボタン
 $router->addRoute('test/imgbtn', 'test\\ImgBtnController', 'index');
-// カレンダーcalendar
+// カレンダー
 $router->addRoute('test/calendar', 'test\\CalendarController', 'index');
 // 表
 $router->addRoute('test/table', 'test\\TableController', 'index');
+// 表
+$router->addRoute('test/csv', 'test\\GetCSVController', 'index');
 
 $route = isset($_GET['url']) ? $_GET['url'] : '';
 $router->dispatch($route);
