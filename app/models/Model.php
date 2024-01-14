@@ -25,4 +25,9 @@ class Model
         return null;
     }
 
+    protected function methodGetData()
+    {
+        return null;
+    }
+
 }

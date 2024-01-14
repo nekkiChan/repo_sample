@@ -2,11 +2,13 @@
 namespace app\views\test;
 
 use app\views\View;
+use app\views\css\GetCSVCSS;
 
 class GetCSVView extends View
 {
     public function __construct() {
         parent::__construct();
+        $this->css = new GetCSVCSS();
         echo $this->script->toggleValue();
     }
     public function getHTML($data)

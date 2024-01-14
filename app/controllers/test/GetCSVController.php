@@ -19,7 +19,7 @@ class GetCSVController extends Controller
         parent::index();
 
         // フォームが送信された場合の処理
-        $users = isset($this->model->dataWhenPostRequest) ? $this->model->dataWhenPostRequest : null;
+        $users = isset($this->model->dataWhenPostRequest) ? $this->model->dataWhenPostRequest : $this->model->methodGetData();
 
         $data = [
             'title' => "CSVテスト画面",

@@ -17,11 +17,11 @@ class GetCSVModel extends Model
         try {
             $data = $this->methodGetData();
             $this->makeCSV->makeCSV('users', $data);
+            return $data;
         } catch (\Exception $e) {
             // Handle the exception (e.g., log it, show an error message)
             echo 'Error: ' . $e->getMessage();
         }
-        return null;
     }
 
     public function methodGetData()
