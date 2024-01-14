@@ -1,6 +1,7 @@
 <?php
 namespace app\views\test;
 
+use app\views\css\CalendarCSS;
 use app\views\View;
 
 class CalendarView extends View
@@ -8,6 +9,7 @@ class CalendarView extends View
     public function getHTML($data)
     {
         parent::getHTML($data);
+        $this->css = new CalendarCSS();
     }
 
     protected function renderContents($data = [])
@@ -16,48 +18,6 @@ class CalendarView extends View
         // バッファリングを開始
         ob_start();
         ?>
-
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                margin: 0;
-                padding: 0;
-                background-color: #f4f4f4;
-            }
-
-            .calendar {
-                max-width: 600px;
-                margin: 20px auto;
-                background-color: #fff;
-                padding: 20px;
-                border-radius: 5px;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            }
-
-            table {
-                width: 100%;
-                border-collapse: collapse;
-            }
-
-            th,
-            td {
-                padding: 10px;
-                text-align: center;
-            }
-
-            th {
-                background-color: #333;
-                color: #fff;
-            }
-
-            td {
-                border: 1px solid #ddd;
-            }
-
-            tr:nth-child(even) {
-                background-color: #f9f9f9;
-            }
-        </style>
 
         <h2>
             <?= $data['title'] ?>

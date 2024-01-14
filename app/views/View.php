@@ -1,8 +1,10 @@
 <?php
+
 namespace app\views;
 
 use app\models\util\Router;
 use app\models\util\Calendar;
+use app\views\css\CSS;
 use app\views\js\Script;
 
 
@@ -10,12 +12,14 @@ class View
 {
     protected $router;
     protected $weeklyCalendar;
+    protected $css;
     protected $script;
 
     public function __construct()
     {
         $this->router = new Router();
         $this->weeklyCalendar = new Calendar();
+        $this->css = new CSS();
         $this->script = new Script();
     }
 
@@ -35,7 +39,7 @@ class View
     protected function renderHeader($data)
     {
         ob_start();
-        ?>
+?>
         <!DOCTYPE html>
         <html>
 
@@ -43,7 +47,6 @@ class View
             <title>
                 <?= $data['title'] ?>
             </title>
-            <link rel="stylesheet" type="text/css" href="<?= HOME_URL . CSS_Path ?>style.css">
         </head>
 
         <body>
@@ -51,20 +54,20 @@ class View
                 <h1>
                     <?= $data['title'] ?>
                 </h1>
-                <?php
-                return ob_get_clean();
-    }
+            <?php
+            return ob_get_clean();
+        }
 
-    protected function renderFooter()
-    {
-        ob_start();
-        ?>
+        protected function renderFooter()
+        {
+            ob_start();
+            ?>
             </div>
             <!-- ./content -->
         </body>
 
         </html>
-        <?php
-        return ob_get_clean();
+<?php
+            return ob_get_clean();
+        }
     }
-}
