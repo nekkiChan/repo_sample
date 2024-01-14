@@ -26,7 +26,7 @@ class View
         echo $this->renderFooter();
     }
 
-    protected function renderContents($data = [])
+    protected function renderContents($data)
     {
         ob_start();
         return ob_get_clean();

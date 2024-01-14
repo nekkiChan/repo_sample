@@ -21,8 +21,6 @@ class GetCSVController extends Controller
         // フォームが送信された場合の処理
         $users = isset($this->model->dataWhenPostRequest) ? $this->model->dataWhenPostRequest : null;
 
-        $users = $this->model->methodGetData();
-
         $data = [
             'title' => "CSVテスト画面",
             'users' => $users,
