@@ -60,42 +60,63 @@ class CalendarModel extends Model
 
     public function methodGetHoliday()
     {
-        // 取得したAPIキー
-        $api_key = 'AIzaSyDuS2_R49PFrCEPXFTnA5yFKIBVQrmLzqQ';
-        // カレンダーID
-        // Googleの提供する日本の祝日カレンダー
-        $calendar_id = urlencode('japanese__ja@holiday.calendar.google.com');
-        // データの開始日
-        $start = date('c', strtotime('2024-01-01')); // ISO 8601形式に変更
-        // データの終了日
-        $end = date('c', strtotime('2024-12-31')); // ISO 8601形式に変更
+        $cacheFileName = 'holiday_data.json';
+        $cacheFilePath = $cacheFileName;
     
-        $url = "https://www.googleapis.com/calendar/v3/calendars/" . $calendar_id . "/events?";
-        $query = [
-            'key' => $api_key,
-            'timeMin' => $start,
-            'timeMax' => $end,
-            'maxResults' => 50,
-            'orderBy' => 'startTime',
-            'singleEvents' => 'true'
-        ];
+        // データの有効期限を1ヶ月に設定
+        $cacheDuration = 30 * 24 * 60 * 60; // 30 days
     
-        $results = [];
-        $data = file_get_contents($url . http_build_query($query));
-        if ($data !== false) {
-            $data = json_decode($data);
-            // $data->itemsには日本の祝日カレンダーの"予定"が入ってきます
-            foreach ($data->items as $row) {
-                // [予定の日付 => 予定のタイトル]
-                $results[$row->start->date] = $row->summary;
-            }
+        // キャッシュが有効であればキャッシュを使用
+        if (file_exists($cacheFilePath) && (time() - filemtime($cacheFilePath)) < $cacheDuration) {
+            $results = json_decode(file_get_contents($cacheFilePath), true);
+            $this->logModel->logMessage('キャッシュが有効なため、APIには接続しません。');
         } else {
-            // エラー処理を追加
-            echo "Error fetching data from Google Calendar API.";
+            $this->logModel->logMessage('APIに接続しました。');
+            // 取得したAPIキー
+            $api_key = 'AIzaSyDuS2_R49PFrCEPXFTnA5yFKIBVQrmLzqQ';
+            // カレンダーID
+            $calendar_id = urlencode('japanese__ja@holiday.calendar.google.com');
+            // データの開始日
+            $start = date('c', strtotime('2024-01-01')); // ISO 8601形式に変更
+            // データの終了日
+            $end = date('c', strtotime('2024-12-31')); // ISO 8601形式に変更
+    
+            $url = "https://www.googleapis.com/calendar/v3/calendars/" . $calendar_id . "/events?";
+            $query = [
+                'key' => $api_key,
+                'timeMin' => $start,
+                'timeMax' => $end,
+                'maxResults' => 50,
+                'orderBy' => 'startTime',
+                'singleEvents' => 'true'
+            ];
+    
+            $results = [];
+            $data = file_get_contents($url . http_build_query($query));
+            if ($data !== false) {
+                $data = json_decode($data);
+                foreach ($data->items as $row) {
+                    $results[$row->start->date] = $row->summary;
+                }
+            } else {
+                echo "Error fetching data from Google Calendar API.";
+                return; // エラーが発生した場合は処理を終了
+            }
+    
+            // データをJSONファイルに保存
+            if (!is_dir(dirname($cacheFilePath))) {
+                // ディレクトリが存在しない場合はディレクトリを作成
+                mkdir(dirname($cacheFilePath), 0777, true);
+            }
+    
+            file_put_contents($cacheFilePath, json_encode($results));
+    
+            // キャッシュの有効期限を更新
+            touch($cacheFilePath, time() + $cacheDuration);
         }
     
         var_dump($results);
         echo '<br>';
-    }
+    }      
     
 }
