@@ -36,7 +36,7 @@ class CalendarView extends View
                 <input type="submit" value="button">
             </div>
 
-            <input type="submit" value="Submit">
+            <input type="submit" name="submit1" value="Submit">
         </form>
 
         <?php

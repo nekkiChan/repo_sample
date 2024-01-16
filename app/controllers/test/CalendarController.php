@@ -28,6 +28,8 @@ class CalendarController extends Controller
             'type' => "weekly",
         ];
 
-        parent::view($data);
+        $this->model->methodGetWeek(new \DateTime(date('Y-m-d')), new \DateTime('2024-5-20'));
+        $this->model->methodGetHoliday();
+        // parent::view($data);
     }
 }
