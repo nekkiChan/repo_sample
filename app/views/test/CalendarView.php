@@ -14,6 +14,10 @@ class CalendarView extends View
 
     protected function renderContents($data = [])
     {
+        // クエリパラメータ "date" の取得
+        $dateQueryParam = $_GET['date'] ?? date('Y-m-d');
+        $selectedDate = new \DateTime($dateQueryParam);
+        echo $selectedDate->format('Y-m-d');
 
         // バッファリングを開始
         ob_start();
@@ -24,14 +28,14 @@ class CalendarView extends View
         </h2>
 
         <!-- ボタンを押すとホーム画面へ -->
-        <form method="post" id="yourFormId" action="<?= $this->router->generateUrl('test/calendar'); ?>">
+        <form method="get" id="yourFormId" action="<?= $this->router->generateUrl('test/calendar'); ?>">
             <div id="select">
-                <?php echo $this->script->addDateSelects('yourFormId','select', new \DateTime($data['date'])); ?>
+                <?php echo $this->script->addDateSelects('yourFormId','select', $selectedDate); ?>
             </div>
             
             <div class="calendar">
                 <?php
-                echo $this->weeklyCalendar->generateCalendar(new \DateTime($data['date']), null, $data['type']);
+                echo $this->weeklyCalendar->generateCalendar($selectedDate, null, $data['type']);
                 ?>
                 <input type="submit" value="button">
             </div>
@@ -44,3 +48,4 @@ class CalendarView extends View
         return ob_get_clean();  // バッファの内容を取得してバッファリングを終了
     }
 }
+?>

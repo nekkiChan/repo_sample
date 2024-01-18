@@ -7,6 +7,11 @@ class Router
 
     public function addRoute($url, $controller, $method)
     {
+        // バリデーションを追加
+        if (!is_string($url) || !is_string($controller) || !is_string($method)) {
+            throw new \InvalidArgumentException('Invalid route parameters.');
+        }
+
         $this->routes[$url] = compact('controller', 'method');
     }
 
@@ -15,30 +20,30 @@ class Router
         $route = $this->routes[$url] ?? $this->getDefaultRoute();
 
         if ($route !== null && isset($route['controller']) && isset($route['method'])) {
-            $controller = APP_Path . Controller_Path . $route['controller'];
+            // コントローラーとメソッドの正当性を確認
+            $controllerClass = APP_Path . Controller_Path . $route['controller'];
+            $method = $route['method'];
 
-            if (file_exists($controller . ".php")) {
-                include_once $controller . ".php";
-
+            if (class_exists($controllerClass) && method_exists($controllerClass, $method)) {
                 // クラスのインスタンス化
-                $controllerInstance = new $controller();
+                $controllerInstance = new $controllerClass();
 
                 // メソッドの呼び出し
-                $controllerInstance->{$route['method']}();
+                $controllerInstance->$method();
             } else {
-                // ファイルが存在しない場合は 404 エラーを表示
-                header("HTTP/1.0 404 Not Found");
+                // ファイルやメソッドが存在しない場合は 404 エラーを表示
+                $this->showErrorPage(404);
             }
         } else {
             // デフォルトのルートがない場合は 404 エラーを表示
-            header("HTTP/1.0 404 Not Found");
+            $this->showErrorPage(404);
         }
     }
 
     private function getDefaultRoute()
     {
         // デフォルトのルートがない場合は 404 エラーを表示
-        header("HTTP/1.0 404 Not Found");
+        $this->showErrorPage(404);
         return null;
     }
 
@@ -57,12 +62,16 @@ class Router
 
     public function redirectTo($routeName)
     {
-        // ルート名に基づいてURLを生成するロジック
-        $url = $this->generateUrl($routeName);
-
         // リダイレクト
-        header("Location: $url");
+        header("Location: " . $this->generateUrl($routeName));
+        exit;
+    }
+
+    private function showErrorPage($statusCode)
+    {
+        // エラーページを表示するなどの処理を追加
+        header("HTTP/1.0 $statusCode Not Found");
+        echo "Error $statusCode: Page not found";
         exit;
     }
 }
-?>

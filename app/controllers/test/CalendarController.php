@@ -25,11 +25,9 @@ class CalendarController extends Controller
         $data = [
             'title' => "カレンダーテスト画面",
             'date' => $date,
-            'type' => "weekly",
+            'type' => "month",
         ];
 
-        $this->model->methodGetWeek(new \DateTime(date('Y-m-d')), new \DateTime('2024-5-20'));
-        $this->model->methodGetHoliday();
-        // parent::view($data);
+        parent::view($data);
     }
 }

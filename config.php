@@ -11,7 +11,7 @@ date_default_timezone_set('Asia/Tokyo');
 define('DEBUG_MODE', 0);
 
 // URLディレクトリ設定
-define('HOME_URL', '\\repo_sample\\');
+define('HOME_URL', '/repo_sample/');
 // Appディレクトリ設定
 define('APP_Path', 'app\\');
 // コントローラーディレクトリ設定
