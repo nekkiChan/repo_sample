@@ -52,6 +52,11 @@ class CalendarCSS extends CSS
                 tr:nth-child(even) {
                     background-color: #f9f9f9;
                 }
+
+                .label-container {
+                    display: flex;
+                    flex-direction: column;
+                }
             </style>
         HTML;
 

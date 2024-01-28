@@ -1,27 +1,31 @@
 <?php
 // OVERVIEW:設定
 
-include_once './mask.conf.php';
+include_once __DIR__ . '/mask.conf.php';
 
 // エラー表示あり
+error_reporting(E_ALL);
 ini_set('display_errors', 1);
 // 日本時間にする
 date_default_timezone_set('Asia/Tokyo');
 // デバッグモード
 define('DEBUG_MODE', 0);
+// OSによってseparateを変更
+$directorySeparate = (substr(PHP_OS, 0, 3) == 'WIN') ? '\\' : '/';
+define('Directory_Separate', $directorySeparate);
 
 // URLディレクトリ設定
-define('HOME_URL', '/repo_sample/');
+define('HOME_URL', __DIR__ . Directory_Separate);
 // Appディレクトリ設定
-define('APP_Path', 'app\\');
+define('APP_Path', 'app' . Directory_Separate);
 // コントローラーディレクトリ設定
-define('Controller_Path', 'controllers\\');
+define('Controller_Path', 'controllers' . Directory_Separate);
 // viewsディレクトリ設定
-define('VIEW_Path', APP_Path.'views\\');
+define('VIEW_Path', APP_Path . 'views' . Directory_Separate);
 // CSSディレクトリ設定
-define('CSS_Path', VIEW_Path.'css\\');
+define('CSS_Path', VIEW_Path . 'css' . Directory_Separate);
 // IMGディレクトリ設定
-define('IMG_Path', VIEW_Path.'img\\asset\\');
+define('IMG_Path', VIEW_Path . 'img' . Directory_Separate . 'asset' . Directory_Separate);
 
 // DBテーブル
 // users
@@ -34,5 +38,3 @@ define('DB_Items', 'items');
 define('Master_Users', 'Users');
 // items
 define('Master_Items', 'Items');
-
-?>

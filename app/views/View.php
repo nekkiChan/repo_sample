@@ -41,9 +41,10 @@ class View
         ob_start();
 ?>
         <!DOCTYPE html>
-        <html>
+        <html lang="ja">
 
         <head>
+        <meta charset="UTF-8">
             <title>
                 <?= $data['title'] ?>
             </title>

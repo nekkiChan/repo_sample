@@ -85,38 +85,44 @@ class Calendar
     private function generateWeekCalendar()
     {
         $code = '';
-
+    
         foreach ($this->getDayCountOfWeek($this->startWeek) as $weekCount => $weekName) {
             if ($weekName == $this->startDate->format('D')) {
                 $this->startDate->modify("-$weekCount day");
             }
         }
-
+    
         for ($i = 0; $i < 7; $i++) {
             // 日付に対応するページへのURLを生成
             $url = $this->router->generateUrl('test/calendar', ['date' => $this->startDate->format('Y-m-d')]);
-
+    
             // セルにリンクを追加
             $code .= '<td>';
             $code .= '<div class="calendar-cell" onclick="location.href=\'' . $url . '\';">';
+            $code .= '<div class="label-container">';
+            $code .= '<label>Label 1</label>';
+            $code .= '<label>Label 2</label>';
+            $code .= '<label>Label 3</label>';
+            $code .= '<label>Label 4</label>';
+            $code .= '</div>';
             $code .= $this->startDate->format('m / d');
             $code .= '</div>';
             $code .= '</td>';
-
+    
             // 次の日に移動
             $this->startDate->modify('+1 day');
         }
-
+    
         return $code;
     }
-
+    
     private function generateMonthCalendar()
     {
         $SDay = (clone $this->startDate)->modify('first day of this month');
         $monthName = $SDay->format('m');
-
+    
         $code = '';
-
+    
         for ($i = 0; $i < 6; $i++) {
             $code .= '<tr>';
             for ($j = 0; $j < 7; $j++) {
@@ -127,7 +133,12 @@ class Calendar
                         // 日付に対応するページへのURLを生成
                         $url = $this->router->generateUrl('test/calendar', ['date' => $SDay->format('Y-m-d')]);
                         $code .= 'class="calendar-cell" onclick="location.href=\'' . $url . '\';">';
-                        // セルにリンクを追加
+                        $code .= '<div class="label-container">';
+                        $code .= '<label>Label 1</label>';
+                        $code .= '<label>Label 2</label>';
+                        $code .= '<label>Label 3</label>';
+                        $code .= '<label>Label 4</label>';
+                        $code .= '</div>';
                         $code .= $SDay->format('d');
                         $SDay->modify('+1 day');
                     } else {
@@ -144,7 +155,8 @@ class Calendar
                 break;
             }
         }
-
+    
         return $code;
-    }
+    }    
+    
 }
