@@ -23,6 +23,7 @@
     <input type="text" id="searchInput" placeholder="検索...">
     <button onclick="search()">検索</button>
 
+    <!-- 商品リストのテーブル -->
     <table id="itemList">
         <thead>
             <tr>
@@ -58,6 +59,7 @@
                     </td>
                     <td class='event'>
                         <div>
+                            <!-- 商品をカートに追加するボタン -->
                             <button onclick="addToOutput(this)">Click</button>
                         </div>
                     </td>
@@ -66,6 +68,7 @@
         </tbody>
     </table>
 
+    <!-- カートのテーブル -->
     <table id='output' style='margin-top: 1em;'>
         <thead>
             <tr>
@@ -90,6 +93,9 @@
         // 初回クリック時にフォームを生成するためのフラグ
         var formCreated = false;
 
+        /**
+         * 商品を検索する関数
+         */
         function search() {
             var query = document.getElementById('searchInput').value.toLowerCase();
             var rows = document.querySelectorAll('#itemList tbody tr');
@@ -107,19 +113,10 @@
             });
         }
 
-        function isAlreadyAdded(id) {
-            var outputTable = document.getElementById('output').getElementsByTagName('tbody')[0];
-            var rows = outputTable.getElementsByTagName('tr');
-
-            for (var i = 0; i < rows.length; i++) {
-                var existingId = rows[i].getAttribute('data-id');
-                if (existingId === id) {
-                    return true; // 既に存在する場合はtrueを返す
-                }
-            }
-            return false; // 存在しない場合はfalseを返す
-        }
-
+        /**
+         * カートに商品を追加する関数
+         * @param {HTMLElement} button - クリックされたボタン要素
+         */
         function addToOutput(button) {
             var row = button.closest('tr');
             var idElement = row.querySelector('.id div');
@@ -129,6 +126,7 @@
                 var id = idElement.innerText;
                 var name = nameElement.innerText;
 
+                // まだ追加されていない場合
                 if (!isAlreadyAdded(id)) {
                     var outputTable = document.getElementById('output').getElementsByTagName('tbody')[0];
                     var newRow = outputTable.insertRow(outputTable.rows.length);
@@ -155,6 +153,27 @@
             }
         }
 
+        /**
+         * カートに商品が既に追加されているかを確認する関数
+         * @param {string} id - 商品のID
+         * @returns {boolean} - 既に追加されている場合はtrue、そうでない場合はfalse
+         */
+        function isAlreadyAdded(id) {
+            var outputTable = document.getElementById('output').getElementsByTagName('tbody')[0];
+            var rows = outputTable.getElementsByTagName('tr');
+
+            for (var i = 0; i < rows.length; i++) {
+                var existingId = rows[i].getAttribute('data-id');
+                if (existingId === id) {
+                    return true; // 既に存在する場合はtrueを返す
+                }
+            }
+            return false; // 存在しない場合はfalseを返す
+        }
+
+        /**
+         * カートのフォームを生成する関数
+         */
         function createForm() {
             var outputForm = document.createElement('form');
             outputForm.id = 'outputForm';
@@ -164,6 +183,11 @@
             formCreated = true;
         }
 
+        /**
+         * カートのフォームに隠しフィールドを追加する関数
+         * @param {string} name - フィールドの名前
+         * @param {string} value - フィールドの値
+         */
         function appendHiddenField(name, value) {
             var input = document.createElement('input');
             input.type = 'hidden';
