@@ -11,11 +11,11 @@
     <?php
 
     $items = [
-        'タロウ',
-        'Item2',
-        '次郎',
-        '太郎',
-        'Mark2'
+        ['id' => 1, 'name' => 'タロウ', 'email' => 'taro@example.com'],
+        ['id' => 2, 'name' => 'Item2', 'email' => 'item2@example.com'],
+        ['id' => 3, 'name' => '次郎', 'email' => 'jiro@example.com'],
+        ['id' => 4, 'name' => '太郎', 'email' => 'taro@example.com'],
+        ['id' => 5, 'name' => 'Mark2', 'email' => 'mark2@example.com'],
     ];
 
     ?>
@@ -37,6 +37,11 @@
                         <?= 'name' ?>
                     </div>
                 </th>
+                <th class='email'>
+                    <div>
+                        <?= 'email' ?>
+                    </div>
+                </th>
                 <th class='event'>
                     <div>
                         <?= 'click!' ?>
@@ -54,7 +59,12 @@
                     </td>
                     <td class='name'>
                         <div>
-                            <?php echo $item; ?>
+                            <?php echo $item['name']; ?>
+                        </div>
+                    </td>
+                    <td class='email'>
+                        <div>
+                            <?php echo $item['email']; ?>
                         </div>
                     </td>
                     <td class='event'>
@@ -102,8 +112,9 @@
 
             rows.forEach(function(row) {
                 var nameText = row.querySelector('.name div').innerText.toLowerCase();
+                var emailText = row.querySelector('.email div').innerText.toLowerCase();
 
-                if (nameText.includes(query)) {
+                if (nameText.includes(query) || emailText.includes(query)) {
                     row.setAttribute('data-value', 'true');
                     row.style.display = 'table-row';
                 } else {

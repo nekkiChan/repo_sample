@@ -13,6 +13,18 @@ class Script
     {
         // ログ
         $this->logModel = new LogModel();
+        // 基本スクリプト導入
+        echo $this->getBasicScript();
+    }
+
+    protected function getBasicScript(){
+
+        $code =<<<HTML
+
+        HTML;
+
+        return $code;
+        
     }
 
     public function toggleValue()

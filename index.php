@@ -25,18 +25,21 @@ $router->addRoute('login', 'LoginController', 'index');
 $router->addRoute('login/auth', 'LoginController', 'auth');
 $router->addRoute('login/logout', 'LoginController', 'logout');
 // アップロード
-$router->addRoute('test/upload', 'test/UploadController', 'index');
+$router->addRoute('test/upload', 'test' . Directory_Separate . 'UploadController', 'index');
 // $router->addRoute('test/upload/result', 'HomeController', 'uploadTestResult');
 // 配列
 $router->addRoute('test/array', 'HomeController', 'arrayTest');
 // 画像ボタン
-$router->addRoute('test/imgbtn', 'test/ImgBtnController', 'index');
+$router->addRoute('test/imgbtn', 'test' . Directory_Separate . 'ImgBtnController', 'index');
 // カレンダー
-$router->addRoute('test/calendar', 'test/CalendarController', 'index');
+$router->addRoute('test/calendar', 'test' . Directory_Separate . 'CalendarController', 'index');
 // 表
-$router->addRoute('test/table', 'test/TableController', 'index');
-// 表
-$router->addRoute('test/csv', 'test/GetCSVController', 'index');
+$router->addRoute('test/table', 'test' . Directory_Separate . 'TableController', 'index');
+// CSV
+$router->addRoute('test/csv', 'test' . Directory_Separate . 'GetCSVController', 'index');
+// 検索
+$router->addRoute('test/search', 'test' . Directory_Separate . 'SearchAndTableController', 'index');
+
 
 $route = isset($_GET['url']) ? $_GET['url'] : '';
 $router->dispatch($route);

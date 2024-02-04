@@ -1,4 +1,5 @@
 <?php
+
 namespace app\controllers;
 
 use app\controllers\Controller;
@@ -13,17 +14,19 @@ class RegisterController extends Controller
     {
         parent::__construct();
         // 引数が提供されなかった場合は、デフォルトのインスタンスを作成
-        $this->registerView = $registerView ?? new RegisterView();
+        $this->view = $registerView ?? new RegisterView();
     }
 
     public function index()
     {
         // レジスタフォームのHTMLを生成
-        $registerForm = $this->registerView->generateRegisterForm();
-        echo $registerForm;
+        $this->view->getHTML([
+            'title' => '登録画面',
+        ]);
     }
 
-    public function register(){
+    public function register()
+    {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['url'])) {
             // フォームが送信された場合
 
