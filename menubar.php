@@ -7,9 +7,19 @@
 
     <style>
         body {
+            font-size: 36px;
             margin: 0;
             padding: 0;
             font-family: 'Arial', sans-serif;
+        }
+
+        h1 {
+            margin: 1rem;
+            padding: 2rem;
+            font-size: clamp(1rem, 5vw, 5rem);
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .container {
@@ -64,6 +74,7 @@
 
         .menu-list li {
             margin: 10px 0;
+            font-size: 0.5rem;
         }
 
         .menu-list a {
@@ -123,6 +134,9 @@
 </head>
 
 <body>
+    <h1>
+        タイトル
+    </h1>
     <div class="container">
         <div class="hamburger-menu" id="hamburgerMenu">
             <div class="menu-icon" id="menuIcon">

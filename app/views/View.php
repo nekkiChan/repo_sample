@@ -6,6 +6,7 @@ use app\models\util\Router;
 use app\models\util\Calendar;
 use app\views\css\CSS;
 use app\views\js\Script;
+use app\models\database\DatabaseModel;
 
 
 class View
@@ -14,6 +15,7 @@ class View
     protected $weeklyCalendar;
     protected $css;
     protected $script;
+    protected $db;
 
     public function __construct()
     {
@@ -21,6 +23,7 @@ class View
         $this->weeklyCalendar = new Calendar();
         $this->css = new CSS();
         $this->script = new Script();
+        $this->db = new DatabaseModel();
     }
 
     protected function getHTML($data)

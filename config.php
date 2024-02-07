@@ -15,7 +15,7 @@ $directorySeparate = (substr(PHP_OS, 0, 3) == 'WIN') ? '\\' : '/';
 define('Directory_Separate', $directorySeparate);
 
 // URLディレクトリ設定
-define('HOME_URL', __DIR__ . Directory_Separate);
+define('HOME_URL', 'https://localhost/repo_sample' . Directory_Separate);
 // Appディレクトリ設定
 define('APP_Path', 'app' . Directory_Separate);
 // コントローラーディレクトリ設定

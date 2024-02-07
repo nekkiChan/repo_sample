@@ -14,6 +14,7 @@ class HomeController extends Controller
 
     public function index()
     {
+        var_dump($_GET);
         $this->view->getHTML(['title' => 'ホーム画面']);
     }
 

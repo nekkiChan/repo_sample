@@ -1,4 +1,5 @@
 <?php
+
 namespace app\models\database;
 
 use app\models\Model;
@@ -164,4 +165,33 @@ class DatabaseModel extends Model
         return $result;
     }
 
+    /**
+     * 指定された検索条件に基づいてデータを取得するメソッド
+     *
+     * @param array $searchParams 検索条件の連想配列。キーは列名、値は検索キーワード。
+     * @return array|null 取得したデータの配列、または失敗時にはnull。
+     */
+    public function getDataBySearch($searchParams, $tableName=null)
+    {
+        $tableName = !empty($tableName) ? $tableName : $this->tableName;
+
+        // 検索条件をSQLクエリに変換
+        $conditions = [];
+        foreach ($searchParams as $column => $value) {
+            $conditions[] = "$column LIKE ?";
+        }
+        $whereClause = implode(" AND ", $conditions);
+
+        $query = "SELECT * FROM {$tableName} WHERE $whereClause";
+
+        // パラメーターの値を準備
+        $params = [];
+        foreach ($searchParams as $value) {
+            // プレースホルダーに適用するパラメーターの値を変更する必要がある場合は、必要に応じて変更します。
+            $params[] = "%$value%"; // 前後にワイルドカードを追加して部分一致検索を行う例
+        }
+
+        // クエリを実行して結果を返す
+        return $this->dbConnector->fetchResultsWithParams($query, $params);
+    }
 }
