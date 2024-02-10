@@ -1,4 +1,5 @@
 <?php
+
 namespace app\views\js;
 
 header("Access-Control-Allow-Origin: *");
@@ -17,14 +18,27 @@ class Script
         echo $this->getBasicScript();
     }
 
-    protected function getBasicScript(){
+    protected function getBasicScript()
+    {
 
-        $code =<<<HTML
+        ob_start();
+?>
+        <script>
+            function submitForm() {
+                var formData = new FormData(document.getElementById("myForm"));
 
-        HTML;
-
-        return $code;
-        
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "", true);
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        document.getElementById("result").innerHTML = xhr.responseText;
+                    }
+                };
+                xhr.send(formData);
+            }
+        </script>
+<?php
+        return ob_get_clean();
     }
 
     public function toggleValue()
@@ -208,5 +222,4 @@ class Script
 
         return $code;
     }
-
 }

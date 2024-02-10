@@ -39,6 +39,8 @@ $router->addRoute('test/table', 'test' . Directory_Separate . 'TableController',
 $router->addRoute('test/csv', 'test' . Directory_Separate . 'GetCSVController', 'index');
 // 検索
 $router->addRoute('test/search', 'test' . Directory_Separate . 'SearchAndTableController', 'index');
+// ajax
+$router->addRoute('test/ajax', 'test' . Directory_Separate . 'AjaxController', 'index');
 
 
 $route = isset($_GET['url']) ? $_GET['url'] : '';

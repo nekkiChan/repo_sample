@@ -20,12 +20,12 @@ class Model
     }
 
     // POSTリクエスト
-    protected function methodWhenPostRequest()
+    public function methodWhenPostRequest()
     {
         return null;
     }
 
-    protected function methodGetData()
+    public function methodGetData()
     {
         return null;
     }
