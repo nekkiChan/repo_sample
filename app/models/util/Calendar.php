@@ -85,68 +85,47 @@ class Calendar
     private function generateWeekCalendar()
     {
         $code = '';
-    
+
         foreach ($this->getDayCountOfWeek($this->startWeek) as $weekCount => $weekName) {
             if ($weekName == $this->startDate->format('D')) {
                 $this->startDate->modify("-$weekCount day");
             }
         }
-    
+
         for ($i = 0; $i < 7; $i++) {
-            // 日付に対応するページへのURLを生成
-            $url = $this->router->generateUrl('test/calendar', ['date' => $this->startDate->format('Y-m-d')]);
-    
+
             // セルにリンクを追加
             $code .= '<td>';
-            $code .= '<div class="calendar-cell" onclick="location.href=\'' . $url . '\';">';
-            $code .= '<div class="label-container">';
-            $code .= '<label>Label 1</label>';
-            $code .= '<label>Label 2</label>';
-            $code .= '<label>Label 3</label>';
-            $code .= '<label>Label 4</label>';
-            $code .= '</div>';
-            $code .= $this->startDate->format('m / d');
-            $code .= '</div>';
+            $code .= $this->generateCellCalendar($this->startDate, 'weekly', false);
             $code .= '</td>';
-    
+
             // 次の日に移動
             $this->startDate->modify('+1 day');
         }
-    
+
         return $code;
     }
-    
+
     private function generateMonthCalendar()
     {
         $SDay = (clone $this->startDate)->modify('first day of this month');
         $monthName = $SDay->format('m');
-    
+
         $code = '';
-    
+
         for ($i = 0; $i < 6; $i++) {
             $code .= '<tr>';
             for ($j = 0; $j < 7; $j++) {
                 $code .= '<td>';
                 if ($i != 0 || $j >= $SDay->format('w')) {
-                    $code .= '<div';
                     if ($monthName == $SDay->format('m')) {
                         // 日付に対応するページへのURLを生成
-                        $url = $this->router->generateUrl('test/calendar', ['date' => $SDay->format('Y-m-d')]);
-                        $code .= 'class="calendar-cell" onclick="location.href=\'' . $url . '\';">';
-                        $code .= '<div class="label-container">';
-                        $code .= '<label>Label 1</label>';
-                        $code .= '<label>Label 2</label>';
-                        $code .= '<label>Label 3</label>';
-                        $code .= '<label>Label 4</label>';
-                        $code .= '</div>';
-                        $code .= $SDay->format('d');
+                        $code .= $this->generateCellCalendar($SDay, 'monthly', false);
                         $SDay->modify('+1 day');
                     } else {
                         // 今月の日付ではない場合は空セルを表示
-                        $code .= '>';
-                        $code .= '&nbsp;';
+                        $code .= $this->generateCellCalendar($SDay, 'monthly', true);
                     }
-                    $code .= '</div>';
                 }
                 $code .= '</td>';
             }
@@ -155,8 +134,34 @@ class Calendar
                 break;
             }
         }
-    
+
         return $code;
-    }    
-    
+    }
+
+    /**
+     * セルを生成するメソッド（オプション付き）
+     * 
+     * @param \Datetime $date 表示する日付
+     * @param string $type カレンダーのタイプ
+     * @param boolean $is_empty セルを空白にするか否か
+     * @return string
+     */
+    private function generateCellCalendar($date, $type, $is_empty)
+    {
+        ob_start();
+?>
+        <?php if ($is_empty === false) : ?>
+            <div class="<?= 'calendar-cell ' . $date->format('Y-m-d') ?>">
+                <?php if ($type === 'monthly') : ?>
+                    <?= $date->format('d') ?>
+                <?php elseif ($type === 'weekly') : ?>
+                    <?= $date->format('m / d') ?>
+                <?php endif; ?>
+            </div>
+        <?php else : ?>
+            <div>&nbsp;</div>
+        <?php endif; ?>
+<?php
+        return ob_get_clean();
+    }
 }

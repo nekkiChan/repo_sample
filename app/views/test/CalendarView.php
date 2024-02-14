@@ -28,20 +28,14 @@ class CalendarView extends View
         </h2>
 
         <!-- ボタンを押すとホーム画面へ -->
-        <form method="get" id="yourFormId" action="<?= $this->router->generateUrl('test/calendar'); ?>">
-            <div id="select">
-                <?php echo $this->script->addDateSelects('yourFormId','select', $selectedDate); ?>
-            </div>
             
             <div class="calendar">
-                <?php
-                echo $this->weeklyCalendar->generateCalendar($selectedDate, null, $data['type']);
-                ?>
-                <input type="submit" value="button">
+                <?= $this->weeklyCalendar->generateCalendar($selectedDate, null, 'monthly');?>
             </div>
 
-            <input type="submit" name="submit1" value="Submit">
-        </form>
+            <div class="calendar">
+                <?= $this->weeklyCalendar->generateCalendar($selectedDate, null, 'weekly');?>
+            </div>
 
         <?php
 
