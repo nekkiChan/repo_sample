@@ -25,6 +25,7 @@ class Controller
         $this->itemsModel = new ItemsModel();
         $this->model = new Model();
         $this->view = new View();
+        $this->ajax();
     }
 
     protected function index()
@@ -34,11 +35,18 @@ class Controller
 
     public function ajax()
     {
-        $this->index();
         $jsonData = json_decode(file_get_contents('php://input'), true);
 
         // テスト
         $_POST['Ajax-data'] = $jsonData;
+        if(!empty($jsonData)){
+            $this->usersModel->updateData(
+                [
+                    'id' => 1,
+                    'username' => $jsonData['name'],
+                ]
+            );
+        }
     }
 
     protected function view($data = [])

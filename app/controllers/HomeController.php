@@ -15,10 +15,6 @@ class HomeController extends Controller
     public function index()
     {
         parent::index();
-        $this->usersModel->updateData([
-            'id' => 1,
-            'username' => 'taro',
-        ]);
         $user = $this->usersModel->getDataByCredentials(['id' => 1]);
         $user = reset($user);
         var_dump($user);

@@ -45,7 +45,7 @@ class Script
 
                 // リクエストを準備
                 // xhr.open('GET', 'ajax?ajax-data[name]=taro', true);
-                xhr.open('POST', 'ajax', true);
+                xhr.open('POST', 'home', true);
                 xhr.setRequestHeader('Content-Type', 'application/json'); // POSTリクエストの場合はContent-Typeを設定する
 
                 // リクエストが完了した際の処理
@@ -53,6 +53,7 @@ class Script
                     if (xhr.status >= 200 && xhr.status < 300) { // HTTPステータスコードが成功を示す場合
                         // 通信成功時の処理
                         // alert('通信成功！');
+                        document.querySelector('.result').innerHTML = '実行成功';
                         // document.querySelector('html').innerHTML = xhr.responseText; // 取得したHTMLを.resultに反映
                     } else {
                         // 通信失敗時の処理
