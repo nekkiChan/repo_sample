@@ -24,17 +24,50 @@ class Script
         ob_start();
 ?>
         <script>
-            function submitForm() {
-                var formData = new FormData(document.getElementById("myForm"));
+            function convertAllInputElements(element){
+                let inputElements = element.closest('div').querySelectorAll('input');
 
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", "", true);
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState == 4 && xhr.status == 200) {
-                        document.getElementById("result").innerHTML = xhr.responseText;
+                console.log(inputElements);
+                let objects = {}
+                Array.from(inputElements).map(element => {
+                    objects[element.getAttribute('class')] = element.value;
+                });
+
+                return objects;
+            }
+
+            function ajax(element) {
+
+                let objects = convertAllInputElements(element);
+
+                var xhr = new XMLHttpRequest(); // XMLHttpRequestオブジェクトを作成
+                var jsonData = JSON.stringify(objects);
+
+                // リクエストを準備
+                // xhr.open('GET', 'ajax?ajax-data[name]=taro', true);
+                xhr.open('POST', 'ajax', true);
+                xhr.setRequestHeader('Content-Type', 'application/json'); // POSTリクエストの場合はContent-Typeを設定する
+
+                // リクエストが完了した際の処理
+                xhr.onload = function() {
+                    if (xhr.status >= 200 && xhr.status < 300) { // HTTPステータスコードが成功を示す場合
+                        // 通信成功時の処理
+                        // alert('通信成功！');
+                        // document.querySelector('html').innerHTML = xhr.responseText; // 取得したHTMLを.resultに反映
+                    } else {
+                        // 通信失敗時の処理
+                        alert('通信失敗！');
                     }
                 };
-                xhr.send(formData);
+
+                // リクエストがエラーで終了した場合の処理
+                xhr.onerror = function() {
+                    // 通信失敗時の処理
+                    alert('通信失敗！');
+                };
+
+                // リクエストを送信
+                xhr.send(jsonData);
             }
         </script>
 <?php

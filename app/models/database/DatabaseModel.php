@@ -21,8 +21,8 @@ class DatabaseModel extends Model
 
     protected function setTableName($tableName = null)
     {
-        // $this->tableName = $tableName;
-        $this->tableName = 'users';
+        $this->tableName = $tableName;
+        // $this->tableName = 'users';
     }
 
     private function getTableName()

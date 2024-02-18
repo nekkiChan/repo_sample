@@ -14,8 +14,19 @@ class HomeController extends Controller
 
     public function index()
     {
-        var_dump($_GET);
-        $this->view->getHTML(['title' => 'ホーム画面']);
+        parent::index();
+        $this->usersModel->updateData([
+            'id' => 1,
+            'username' => 'taro',
+        ]);
+        $user = $this->usersModel->getDataByCredentials(['id' => 1]);
+        $user = reset($user);
+        var_dump($user);
+
+        $this->view->getHTML([
+            'title' => 'ホーム画面',
+            'user' => $user,
+        ]);
     }
 
     public function arrayTest()

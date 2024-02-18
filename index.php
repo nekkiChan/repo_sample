@@ -24,6 +24,8 @@ $router->addRoute('register/create', 'RegisterController', 'register');
 $router->addRoute('login', 'LoginController', 'index');
 $router->addRoute('login/auth', 'LoginController', 'auth');
 $router->addRoute('login/logout', 'LoginController', 'logout');
+// ajax
+$router->addRoute('ajax', 'Controller', 'ajax');
 // アップロード
 $router->addRoute('test/upload', 'test' . Directory_Separate . 'UploadController', 'index');
 // $router->addRoute('test/upload/result', 'HomeController', 'uploadTestResult');
@@ -39,9 +41,15 @@ $router->addRoute('test/table', 'test' . Directory_Separate . 'TableController',
 $router->addRoute('test/csv', 'test' . Directory_Separate . 'GetCSVController', 'index');
 // 検索
 $router->addRoute('test/search', 'test' . Directory_Separate . 'SearchAndTableController', 'index');
-// ajax
-$router->addRoute('test/ajax', 'test' . Directory_Separate . 'AjaxController', 'index');
 
 
-$route = isset($_GET['url']) ? $_GET['url'] : '';
-$router->dispatch($route);
+// Ajaxリクエストが送信された場合の処理
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // ルーティングを行うため、直接$_POST['url']を参照している
+    $route = isset($_POST['url']) ? $_POST['url'] : '';
+    $router->dispatch($route);
+} else {
+    // GETリクエストが送信された場合の処理
+    $route = isset($_GET['url']) ? $_GET['url'] : '';
+    $router->dispatch($route);
+}

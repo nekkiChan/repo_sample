@@ -18,20 +18,33 @@ class HomeView extends View
 
   public function renderContents($data)
   {
-    session_start();
     // var_dump($_SESSION);
+    var_dump($_POST);
+    var_dump($_GET);
 
 ?>
-
-    <?php
-
-    $param = $this->db->getDataBySearch(['username' => $_GET['name'], 'email' => $_GET['email']], 'users');
-    var_dump($param);
-    ?>
+    <div>
+      <?= $data['user']['username'] ?>
+    </div>
+    <div id="ajax-field">
+      <div>
+        <input type="text" class="id" name="id[]" placeholder="id">
+      </div>
+      <div>
+        <input type="text" class="name" name="name[]" placeholder="name">
+      </div>
+      <div>
+        <input type="text" class="age" name="age[]" placeholder="age">
+      </div>
+      <button class="ajax" value="ajax通信で取得する" onclick="ajax(this);">
+        ajax通信で取得する
+      </button>
+    </div>
+    <div class="result">
+      ajax通信で取得する
+    </div>
 
     <form action="<?= $this->router->generateUrl('home') ?>" method="get">
-      <input type="text" name="name" value="">
-      <input type="text" name="email" value="">
       <button type="submit">ボタン</button>
     </form>
 

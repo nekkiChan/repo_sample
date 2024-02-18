@@ -1,4 +1,5 @@
 <?php
+
 namespace app\controllers;
 
 use app\models\util\Router;
@@ -28,7 +29,16 @@ class Controller
 
     protected function index()
     {
-        isset($_SESSION) ?? session_start() ;
+        // session_start();
+    }
+
+    public function ajax()
+    {
+        $this->index();
+        $jsonData = json_decode(file_get_contents('php://input'), true);
+
+        // テスト
+        $_POST['Ajax-data'] = $jsonData;
     }
 
     protected function view($data = [])

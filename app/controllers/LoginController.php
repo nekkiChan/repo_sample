@@ -18,7 +18,7 @@ class LoginController extends Controller
 
     public function index()
     {
-        session_start();
+        parent::index();
         var_dump($_SESSION);
         $loginForm = $this->loginView->generateLoginForm();
         echo $loginForm;
@@ -61,7 +61,7 @@ class LoginController extends Controller
     public function logout()
     {
         // セッション破棄
-        session_start();
+        parent::index();
         session_destroy();
 
         echo 'Logout successful!';
