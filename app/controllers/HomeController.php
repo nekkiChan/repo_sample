@@ -15,13 +15,9 @@ class HomeController extends Controller
     public function index()
     {
         parent::index();
-        $user = $this->usersModel->getDataByCredentials(['id' => 1]);
-        $user = reset($user);
-        var_dump($user);
 
         $this->view->getHTML([
             'title' => 'ホーム画面',
-            'user' => $user,
         ]);
     }
 

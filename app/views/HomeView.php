@@ -18,41 +18,67 @@ class HomeView extends View
 
   public function renderContents($data)
   {
-    // var_dump($_SESSION);
-    var_dump($_POST);
-    var_dump($_GET);
 
+    $data = $this->db->getDataByCredentials(
+      [
+        'count' => 3,
+        DB_Users['ID'] . '.name' => 'taro',
+      ],
+      // [
+      //   [
+      //     'table' => DB_Users['ID'],
+      //     'column' => 'name',
+      //   ],
+      //   [
+      //     'table' => DB_Items['ID'],
+      //     'column' => 'name',
+      //   ],
+      // ],
+      DB_Stores['DB_NAME'],
+      [
+        'order' => [
+          'column' => DB_Stores['DB_NAME'] . '.id',
+          'order' => 'UP'
+        ],
+        'join' => [
+          [
+            'type' => 'LEFT',
+            'table' => DB_Items['DB_NAME'] . ' AS ' . DB_Items['ID'],
+            'on' =>
+            DB_Stores['DB_NAME'] . '.' . 'item_id' .
+              ' = ' . DB_Items['ID'] . '.' . 'id',
+          ],
+          [
+            'type' => 'LEFT',
+            'table' => DB_Users['DB_NAME'] . ' AS ' . DB_Users['ID'],
+            'on' =>
+            DB_Stores['DB_NAME'] . '.' . 'user_id' .
+              ' = ' . DB_Users['ID'] . '.' . 'id',
+          ],
+        ],
+        'select' => [
+          [
+            'table' => DB_Items['ID'],
+            'column' => 'name',
+          ],
+          [
+            'table' => DB_Users['ID'],
+            'column' => 'name',
+          ],
+        ],
+        'like' => [
+          [
+            'column' => DB_Items['ID'] . '.name',
+            'value' => 'B',
+          ],
+        ]
+      ]
+    );
+
+    var_dump($data);
 ?>
-    <div>
-      <?= $data['user']['username'] ?>
-    </div>
-    <div id="ajax-field">
-      <div>
-        <input type="text" class="id" name="id[]" placeholder="id">
-      </div>
-      <div>
-        <input type="text" class="name" name="name[]" placeholder="name">
-      </div>
-      <div>
-        <input type="text" class="age" name="age[]" placeholder="age">
-      </div>
-      <button class="ajax" value="ajax通信で取得する" onclick="ajax(this);">
-        ajax通信で取得する
-      </button>
-    </div>
-    <div class="result">
-      ajax通信で取得する
-    </div>
-
-    <form action="<?= $this->router->generateUrl('home') ?>" method="get">
-      <button type="submit">ボタン</button>
-    </form>
 
 
-    <!-- ボタンを押すとホーム画面へ -->
-    <!-- <form method="post" action="<?php echo $this->router->generateUrl('login/logout'); ?>">
-            <input type="submit" value="Logout">
-        </form> -->
 
 <?php
 

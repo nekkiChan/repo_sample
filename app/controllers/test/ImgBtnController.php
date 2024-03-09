@@ -1,4 +1,5 @@
 <?php
+
 namespace app\controllers\test;
 
 use app\controllers\Controller;
@@ -20,7 +21,7 @@ class ImgBtnController extends Controller
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             var_dump($_POST);
         }
-        $query = "SELECT id, username, email FROM users";
+        $query = "SELECT id, name, email FROM users";
         $users = $this->usersModel->dbConnector->fetchAll($query);
         usort($users, function ($a, $b) {
             return $a['id'] - $b['id'];
@@ -29,7 +30,7 @@ class ImgBtnController extends Controller
             'title' => "画像ボタンテスト画面",
             'users' => $users,
         ];
-        
+
         parent::view($data);
     }
 }

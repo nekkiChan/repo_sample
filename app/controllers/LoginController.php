@@ -1,4 +1,5 @@
 <?php
+
 namespace app\controllers;
 
 use app\controllers\Controller;
@@ -27,17 +28,17 @@ class LoginController extends Controller
     public function auth()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $username = $_POST['username'] ?? '';
+            $name = $_POST['name'] ?? '';
             $password = $_POST['password'] ?? '';
 
             // 入力検証などのロジック
-            if (empty($username) || empty($password)) {
-                $this->loginView->showError("Username and password are required");
+            if (empty($name) || empty($password)) {
+                $this->loginView->showError("name and password are required");
                 return;
             }
 
             // ユーザー認証
-            $data = ['username' => $username];
+            $data = ['name' => $name];
             $credentials = $this->userModel->getUserByCredentials($data);
 
             if ($credentials && password_verify($password, $credentials['password'])) {
@@ -47,13 +48,13 @@ class LoginController extends Controller
 
                 // ユーザー情報をセッションに保存
                 $_SESSION['user_id'] = $credentials['id'];
-                $_SESSION['username'] = $credentials['username'];
+                $_SESSION['name'] = $credentials['name'];
 
                 $this->router->redirectTo('home');
                 echo 'Login successful!';
             } else {
                 // ログイン失敗
-                $this->loginView->showError("Invalid username or password");
+                $this->loginView->showError("Invalid name or password");
             }
         }
     }

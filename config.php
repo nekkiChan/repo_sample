@@ -29,9 +29,11 @@ define('IMG_Path', VIEW_Path . 'img' . Directory_Separate . 'asset' . Directory_
 
 // DBテーブル
 // users
-define('DB_Users', 'users');
+define('DB_Users', ['ID'=>'db_users', 'DB_NAME'=>'users']);
 // items
-define('DB_Items', 'items');
+define('DB_Items',  ['ID'=>'db_items', 'DB_NAME'=>'items']);
+// items
+define('DB_Stores',  ['ID'=>'db_stores', 'DB_NAME'=>'stores']);
 
 // マスタ
 // users

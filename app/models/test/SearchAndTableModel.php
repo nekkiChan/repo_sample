@@ -1,4 +1,5 @@
 <?php
+
 namespace app\models\test;
 
 use app\models\database\table\UsersModel;
@@ -28,7 +29,7 @@ class SearchAndTableModel extends Model
     {
         try {
             $usersModel = new UsersModel();
-            $query = "SELECT id, username, email FROM users";
+            $query = "SELECT id, name, email FROM users";
             // Use a prepared statement to prevent SQL injection
             $users = $usersModel->dbConnector->fetchAll($query);
             if ($users === false) {
@@ -45,5 +46,4 @@ class SearchAndTableModel extends Model
             throw new \Exception('Error in methodGetData: ' . $e->getMessage());
         }
     }
-
 }

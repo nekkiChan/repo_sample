@@ -1,4 +1,5 @@
 <?php
+
 namespace app\models\database;
 
 use \PDO;
@@ -51,6 +52,40 @@ class DatabaseConnector
     }
 
     /**
+     * テーブル名やカラム名をエスケープする関数
+     * 
+     * @param string $identifier エスケープする名前
+     * @return string エスケープされた名前
+     */
+    function escapeIdentifier($identifier)
+    {
+        // エスケープ処理を実装する（例えば、`が使われるデータベースではバッククォートでエスケープするなど）
+        return "`" . str_replace("`", "``", $identifier) . "`";
+    }
+
+
+    // prepareメソッドの実装
+    public function prepare($query)
+    {
+        try {
+            $this->connectToDatabase();
+            // SQLクエリを実行する前にエラーログに記録
+            error_log("Executing query: $query");
+            $this->logModel->logMessage("Executing query: $query");
+            $data = $this->connection->prepare($query);
+            $this->closeConnection();
+            // エラーログに成功情報を記録
+            error_log("Query executed successfully.");
+            $this->logModel->logMessage("Query executed successfully.");
+            return $data;
+        } catch (PDOException $e) {
+            // エラーログにエラーメッセージを記録
+            error_log("Error executing query: " . $e->getMessage());
+            $this->logModel->logMessage("Error executing query: " . $e->getMessage());
+        }
+    }
+
+    /**
      * データベースでクエリを実行するメソッド
      *
      * @param string $query 実行するSQLクエリ。
@@ -74,18 +109,18 @@ class DatabaseConnector
         }
     }
 
-    /**
-     * パラメーター付きでデータベースでクエリを実行するメソッド
-     *
-     * @param string $query プレースホルダーを含むSQLクエリ。
-     * @param array $params パラメーター値の配列。
-     */
     public function executeQueryWithParams($query, $params)
     {
         try {
             $this->connectToDatabase();
+            $this->logModel->logMessage("クエリ: $query");
             $statement = $this->connection->prepare($query);
-            $statement->execute($params);
+            foreach ($params as $param => $value) {
+                $this->logModel->logMessage("パラメータ: $query");
+                $this->logModel->logMessage("値: $value");
+                $statement->bindValue($param, $value, PDO::PARAM_STR);
+            }
+            $statement->execute();
             $this->closeConnection();
             $this->logModel->logMessage("Query executed successfully: $query"); // クエリを出力するよう変更
         } catch (PDOException $e) {

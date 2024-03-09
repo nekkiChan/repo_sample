@@ -39,11 +39,11 @@ class Controller
 
         // テスト
         $_POST['Ajax-data'] = $jsonData;
-        if(!empty($jsonData)){
+        if (!empty($jsonData)) {
             $this->usersModel->updateData(
                 [
                     'id' => 1,
-                    'username' => $jsonData['name'],
+                    'name' => $jsonData['name'],
                 ]
             );
         }

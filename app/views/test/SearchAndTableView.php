@@ -32,7 +32,7 @@ class SearchAndTableView extends View
 
             <!-- 検索欄 -->
             <div id="users-search">
-                <input type="text" name="username" placeholder="名前">
+                <input type="text" name="name" placeholder="名前">
                 <input type="email" name="email" placeholder="メール">
                 <button onclick='getInput(this);'>ボタン</button>
             </div>

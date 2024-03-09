@@ -14,28 +14,6 @@ class ItemsModel extends DatabaseModel
         $this->tableTitle = Master_Items;
         // ページ毎アイテム
         $this->itemsPerPage = 3;
-        // ログ
-        $this->logModel->logMessage($this->getQueryDataTable());
-
-        // テーブルが存在しない場合のみ作成
-        if (!$this->isTableExists()) {
-            $this->createTable($this->getQueryDataTable());
-        }
-    }
-
-    public function getQueryDataTable()
-    {
-        $query = "
-        CREATE TABLE IF NOT EXISTS $this->tableName (
-            id serial PRIMARY KEY,
-            name VARCHAR(30) NOT NULL,
-            created_at TIMESTAMP,
-            updated_at TIMESTAMP
-            -- 他のカラムも必要に応じて追加
-        )       
-        ";
-
-        return $query;
     }
 
     public function getTableName()
@@ -77,11 +55,5 @@ class ItemsModel extends DatabaseModel
     public function compareDataWithDB($data)
     {
         return parent::compareDataWithDB($data);
-    }
-
-    // ユーザー名からユーザーを取得
-    public function getDataByCredentials($data = [])
-    {
-        return parent::getDataByCredentials($data);
     }
 }

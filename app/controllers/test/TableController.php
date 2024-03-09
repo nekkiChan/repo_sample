@@ -56,8 +56,8 @@ class TableController extends Controller
             }
         }
 
-        $contents[DB_Users] = $this->getContents($this->usersModel);
-        $contents[DB_Items] = $this->getContents($this->itemsModel);
+        $contents[DB_Users['DB_NAME']] = $this->getContents($this->usersModel);
+        $contents[DB_Items['DB_NAME']] = $this->getContents($this->itemsModel);
 
         $data = [
             'title' => "表テスト画面",
