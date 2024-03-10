@@ -143,11 +143,19 @@ class DatabaseModel extends Model
      * @param $conditions array データの連想配列
      * @param $tableName string テーブル名
      * @param $option array オプションの連想配列
+     *   - where: [
+     *       [
+     *           'column' => '列名',
+     *           'value' => '値',
+     *           'function' => '演算子', // 'like', '=', '<', '>', '<=', '>=' など
+     *       ],
+     *       ...
+     *     ]
      *   - order: ['column' => '列名', 'order' => 'UP' or 'DOWN']
      *   - limit: [取得件数, オフセット]
      *   - period: [['column' => '列名', 'period' => ['Y-m-d', 'Y-m-d']], ...]
-     *   - like: [['column' => '列名', 'value' => '検索文字列'], ...]
-     *   - join: [['table' => '列名', 'value' => '検索文字列'], ...]
+     *   - select: [['table' => 'テーブル名', 'column' => '列名'], ...]
+     *   - join: [['type' => 'JOINのタイプ', 'table' => 'テーブル名', 'on' => 'ONの条件'], ...]
      * @return array|null データの連想配列
      */
     public function getDataByCredentials($conditions = [], $tableName = '', $option = [])
@@ -181,6 +189,9 @@ class DatabaseModel extends Model
 
         $query = "SELECT $selectColumns FROM $tableName";
 
+        // プレースホルダー（SQLインジェクション対策）
+        $params = array();
+
         // JOIN 句の条件を格納する配列
         $_joins = array();
 
@@ -208,14 +219,15 @@ class DatabaseModel extends Model
             }
         }
 
-        // 新しい条件の追加: like
-        if (!empty($option['like']) && is_array($option['like'])) {
-            foreach ($option['like'] as $likeCondition) {
-                $column = $likeCondition['column'];
-                $value = $likeCondition['value'];
+        // 新しい条件の追加: where
+        if (!empty($option['where']) && is_array($option['where'])) {
+            foreach ($option['where'] as $whereCondition) {
+                $column = $whereCondition['column'];
+                $value = $whereCondition['value'];
+                $function = $whereCondition['function'];
                 $_column = str_replace('.', '_', $column);
-                $_conditions[] = "$column LIKE :$_column";
-                $params[":$_column"] = "%$value%";
+                $_conditions[] = "$column $function :$_column";
+                $params[":$_column"] = $value;
             }
         }
 

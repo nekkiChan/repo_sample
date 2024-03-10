@@ -40,6 +40,15 @@ class HomeView extends View
           'column' => DB_Stores['DB_NAME'] . '.id',
           'order' => 'UP'
         ],
+        'period' => [
+          [
+            'column' => 'date',
+            'period' => [
+              '2024-03-21',
+              '2024-04-21'
+            ]
+          ],
+        ],
         'join' => [
           [
             'type' => 'LEFT',
@@ -66,10 +75,11 @@ class HomeView extends View
             'column' => 'name',
           ],
         ],
-        'like' => [
+        'where' => [
           [
             'column' => DB_Items['ID'] . '.name',
-            'value' => 'B',
+            'value' => '%B%',
+            'function' => 'like',
           ],
         ]
       ]
